@@ -20,7 +20,6 @@
     "autoload": {
         "psr-0": { "Maith\\NewsletterBundle": "" }
     },
-    "minimum-stability": "dev",
-    "target-dir": "Maith/NewsletterBundle"
+    "minimum-stability": "dev"
 }
 
