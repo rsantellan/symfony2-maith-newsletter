@@ -1,0 +1,16 @@
+<div>
+  {% if groups | length == 0 %}
+    <h3>No hay grupos. No seleccione esta opción</h3>
+  {% else %}
+  <form action="javascript:void(0)" method='POST' onsubmit='return false;'>
+    <div class="form-group">
+        <label for="groups-selector">Elegir el grupo:</label>
+        <select class="form-control" id="groups-selector" placeholder="" type="email" name="groups-selector">
+          {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.name }}</option>
+          {% endfor %}
+        </select>
+    </div>
+  </form>
+  {% endif %}
+</div>

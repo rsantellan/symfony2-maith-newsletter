@@ -1,0 +1,80 @@
+{% extends 'MaithTekoaBundle::adminlayout.html.twig' %}
+{% block pagestylesheets %}
+<link rel="stylesheet" href="{{ asset('bundles/maithtekoa/admin/vendor/toastr/toastr.css') }}">
+<link rel="stylesheet" href="{{ asset('bundles/maithtekoa/admin/vendor/tagsinputs/jquery.tagsinput.css') }}">
+<link rel="stylesheet" href="{{ asset('bundles/maithtekoa/admin/vendor/bootstrap-datepicker/datepicker.css') }}" >
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset('bundles/maithtekoa/admin/vendor/toastr/toastr.min.js') }}"></script>
+<script src="{{ asset('bundles/maithtekoa/admin/vendor/jquery.blockUI.min.js') }}"></script>
+<script src="{{ asset('bundles/maithtekoa/admin/tinymce/tinymce.min.js') }}"></script>
+<script src="{{ asset('bundles/maithtekoa/admin/vendor/tagsinputs/jquery.tagsinput.min.js') }}"></script>
+<script src="{{ asset('bundles/maithtekoa/admin/vendor/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('bundles/maithnewsletter/js/newsletter.js') }}"></script>
+{% endblock %}
+{% block emailssidebars %}
+  <!-- mail links sidebar -->
+  <aside class="sidebar-250 canvas-right bg-white bd-t">
+    <header class="header navbar bd-b pd-l-md pd-r-md">
+      <a href="{{ path('admin_newsletter_create_new')}}" onclick='return createEditNewsletter(this);' class="btn btn-primary btn-outline btn-block navbar-btn">
+        <small>Crear</small>
+      </a>
+    </header>
+
+    <div class="content-wrap no-padding">
+
+      <nav role="navigation">
+        <div class="no-padding">
+            <h3>{% trans %}admin_newsletter_user_active_quantity{% endtrans %}{{ quantity }}</h3>
+            <div id='new_user_container'>
+                 {% include 'MaithNewsletterBundle:Default:userForm.html.twig' with { 'userform' : userform } %}  
+            </div>
+            <h3>{% trans %}admin_newsletter_user_upload_file_title{% endtrans %}</h3>
+            <form action="{{ path('admin_newsletter_upload_user') }}" method="post" role="form" {{ form_enctype(uploadusers) }}>
+              <div class="form-group">
+                  {{ form_errors(uploadusers.submitFile) }}
+                  <label for="{{ uploadusers.submitFile.vars.id }}">{% trans %}admin_newsletter_user_csv_file{% endtrans %}</label>
+                  {{ form_widget(uploadusers.submitFile, {'attr' : {'class' : 'form-control'}}) }}
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-default">{% trans %}admin_newsletter_user_upload{% endtrans %}</button>
+              </div>	
+                  {{ form_rest(uploadusers) }}
+            </form>
+
+            <a href='{{ path('admin_newsletter_download_user')}}' class='btn btn-info'>{% trans %}admin_newsletter_user_descargar_lista{% endtrans %}</a> 
+            <div id='new_group_container'>
+                 {% include 'MaithNewsletterBundle:Default:groupForm.html.twig' with { 'groupform' : groupform } %}
+            </div>
+            <h3>{% trans %}admin_newsletter_group_listado{% endtrans %}</h3>
+            <ul class="nav nav-pills nav-stacked" id="folders-list">
+                {% for group in groups %}
+              <li>
+                {{ group.name }}
+              </li>
+            {% endfor %}
+            </ul>
+        </div>
+        </nav>
+      </div>
+    </aside>
+    <!-- /mail links sidebar -->
+
+    <!-- mails sidebar -->
+    
+    <aside class="sidebar-300 bg-white bd-l bd-r bd-t" id="email_messages_preview_box">
+
+      {% include 'MaithNewsletterBundle:Default:contentspreviews.html.twig' with { 'contents' : contents, 'pager': 0, 'limitContent' : limitContent } %}
+
+    </aside>
+    <!-- /mails sidebar -->
+{% endblock %}
+
+{% block body %}
+<div id="newsletter-compose-container">
+</div>
+	
+<input type='hidden' id='newsletter-user-form' value='{{ path('admin_newsletter_retrieve_newsletter_user_form') }}' />	
+<input type='hidden' id='newsletter-user-autocomplete' value='{{ path('admin_newsletter_retrieve_newsletter_user') }}' />	
+<input type='hidden' id='selector-group-to-send' value='{{ path('admin_newsletter_retrieve_newsletter_groups') }}' />	
+{% endblock %}

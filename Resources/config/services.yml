@@ -1,0 +1,7 @@
+parameters:
+#    maith_newsletter.example.class: Maith\NewsletterBundle\Example
+
+services:
+#    maith_newsletter.example:
+#        class: %maith_newsletter.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

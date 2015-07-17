@@ -1,0 +1,66 @@
+<h2>{{ entity.title }}</h2>
+<a href='javascript:void(0)' onclick='$("#div-edit-container-{{ entity.id }}").toggle()' class='btn btn-info'>{% trans %}admin_newsletter_content_edit{% endtrans %}</a>
+<div id='div-edit-container-{{ entity.id }}' style='display:none'>
+  <form action="{{ path('admin_newsletter_update_content', {'id' : entity.id })}}" method='POST' onsubmit='return saveData(this);'>
+      <div class='pd-n mg-t-lg'>
+          <div class="form-group">
+            {{ form_errors(form.body) }}
+            <label for="{{ form.body.vars.id }}">Contenido:</label>
+            {{ form_widget(form.body, {'attr' : {'class' : 'form-control mceEditor'}}) }}
+          </div>
+      {{ form_widget(form) }}
+
+
+      {{ form_rest(form) }}
+      </div>
+
+      <div class="mg-t-md">
+          <button class="btn btn-sm btn-danger pull-right" type="submit">Enviar</button>
+      </div>
+  </form>
+</div>
+
+
+<a href='{{ path('admin_newsletter_preview_content', {'id' : entity.id}) }}' target="_blank" class='btn btn-info'>{% trans %}admin_newsletter_content_preview{% endtrans %}</a>
+
+<div style="clear:both !important;"></div>
+
+<div class="col-md-4">
+  <form action="{{ path('admin_newsletter_send_content_to_queue', {'id' : entity.id })}}" method='POST' onsubmit='return saveSendData(this);'>
+      <div class='pd-n mg-t-lg'>
+          <div class="form-group">
+			  {{ form_errors(formSend.sendat) }}
+              <label for="{{ formSend.sendat.vars.id }}">Enviar el</label>
+              <div class="">
+                <div class="input-group mg-b-md input-append date datepicker" data-date="{{ formSend.sendat.vars.value | date('d-m-Y') }}" data-date-format="dd-mm-yyyy">
+                    {{ form_widget(formSend.sendat, {'attr' : {'class' : 'form-control'}}) }}
+                    <span class="input-group-btn">
+                        <button class="btn btn-white add-on" type="button">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            {{ form_errors(formSend.sendToType) }}
+            <label for="{{ formSend.sendToType.vars.id }}">Enviar a:</label>
+            {{ form_widget(formSend.sendToType, {'attr' : {'class' : 'form-control mceEditor', 'onchange' : 'showChangesTypes(this)'}}) }}
+          </div>
+      {{ form_rest(formSend) }}
+      </div>
+      <div class="mg-t-md">
+          <button class="btn btn-sm btn-danger pull-right" type="submit">Enviar</button>
+      </div>
+  </form>
+</div>
+<div class="col-md-8" id="selector-container">
+  
+</div>
+<div style="clear:both !important;"></div>
+<div class="pd-t-lg">
+  <h4 class="pd-t-lg">{% trans %}admin_newsletter_content_sended_list{% endtrans %}</h4>
+  <div id='sended_table_container'>
+    {% include 'MaithNewsletterBundle:Default:sendedTable.html.twig' with { 'entity' : entity } %}
+  </div>
+</div>

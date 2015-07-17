@@ -1,0 +1,22 @@
+<form action="{{ path('admin_newsletter_save_content')}}" method='POST' onsubmit='return saveData(this);'>
+    <div class='pd-n mg-t-lg'>
+        <div class="form-group">
+          {{ form_errors(form.title) }}
+          <label for="{{ form.title.vars.id }}">Titulo:</label>
+          {{ form_widget(form.title, {'attr' : {'class' : 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+          {{ form_errors(form.body) }}
+          <label for="{{ form.body.vars.id }}">Contenido:</label>
+          {{ form_widget(form.body, {'attr' : {'class' : 'form-control mceEditor'}}) }}
+        </div>
+    {{ form_widget(form) }}
+
+
+    {{ form_rest(form) }}
+    </div>
+
+    <div class="mg-t-md">
+        <button class="btn btn-sm btn-danger pull-right" type="submit">Enviar</button>
+    </div>
+</form>

@@ -1,0 +1,77 @@
+admin_newsletter_index:
+    path:     /
+    defaults: { _controller: MaithNewsletterBundle:Default:index }
+
+admin_newsletter_save_user:
+    path:     /save-new-user-simple
+    defaults: { _controller: MaithNewsletterBundle:Default:createSimpleUser }
+    requirements: { _method: post }
+
+admin_newsletter_save_group:
+    path:     /save-new-group
+    defaults: { _controller: MaithNewsletterBundle:Default:createGroup }
+    requirements: { _method: post }
+
+admin_newsletter_download_user:
+    path:     /download-users
+    defaults: { _controller: MaithNewsletterBundle:Default:downloadUsers }
+
+admin_newsletter_upload_user:
+    path:     /upload-users-csv
+    defaults: { _controller: MaithNewsletterBundle:Default:uploadUsersFile }
+    
+admin_newsletter_create_new:
+    path:     /create-new
+    defaults: { _controller: MaithNewsletterBundle:Default:createContent }
+    
+admin_newsletter_save_content:
+    path:     /save-new-content
+    defaults: { _controller: MaithNewsletterBundle:Default:saveContent }
+    requirements: { _method: post }
+    
+admin_newsletter_pagination_content:
+    path:     /{page}/contents.html
+    defaults: { _controller: MaithNewsletterBundle:Default:changeContentPage }
+    
+admin_newsletter_edit_content:
+    path:     /{id}/edit-content
+    defaults: { _controller: MaithNewsletterBundle:Default:editContent }
+    
+admin_newsletter_update_content:
+    path:     /{id}/update-content
+    defaults: { _controller: MaithNewsletterBundle:Default:updateContent }    
+    requirements: { _method: post }
+    
+admin_newsletter_preview_content:
+    path:     /{id}/preview-content
+    defaults: { _controller: MaithNewsletterBundle:Default:previewContent }
+    
+admin_newsletter_send_content_to_queue:
+    path:     /{id}/send-content-queue
+    defaults: { _controller: MaithNewsletterBundle:Default:sendContentQueue }    
+    requirements: { _method: post }
+    
+admin_newsletter_show_send_content:
+    path:     /{id}/preview-sended-content
+    defaults: { _controller: MaithNewsletterBundle:Default:previewSendContent }    
+    
+admin_newsletter_download_sended_users:
+    path:     /{id}/download-sended-users
+    defaults: { _controller: MaithNewsletterBundle:Default:downloadSendedUsers }
+    
+admin_newsletter_retrieve_newsletter_groups:
+    path:     /retrieve-newsletter-groups
+    defaults: { _controller: MaithNewsletterBundle:Default:retrieveGroups }    
+
+admin_newsletter_retrieve_newsletter_user_form:    
+    path:     /retrieve-newsletter-users-form
+    defaults: { _controller: MaithNewsletterBundle:Default:retrieveUserForm }
+    
+admin_newsletter_retrieve_newsletter_user:    
+    path:     /retrieve-newsletter-users
+    defaults: { _controller: MaithNewsletterBundle:Default:retrieveUsers }    
+    
+admin_newsletter_remove_sended_newsletter:
+    path:     /{id}/remove-sended-newsletter
+    defaults: { _controller: MaithNewsletterBundle:Default:removeSendedContent }    
+    requirements: { _method: post }

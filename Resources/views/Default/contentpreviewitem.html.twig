@@ -1,0 +1,7 @@
+<li class="list-group-item no-border" id='message_header_{{ content.id }}'>
+  <a href="{{ path('admin_newsletter_edit_content', { 'id': content.id })}}" onclick="return createEditNewsletter(this);">
+    <span class="no-margin center-block" id="content-title-{{ content.id }}">
+        {{ content.title }}
+    </span>
+  </a>
+</li>

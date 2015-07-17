@@ -1,0 +1,4 @@
+MaithTekoaBundle_admin_category:
+    resource: "@MaithNewsletterBundle/Resources/config/routing/newsletter.yml"
+    prefix:   /admin/newsletter
+

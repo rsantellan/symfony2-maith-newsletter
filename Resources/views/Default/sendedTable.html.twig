@@ -1,0 +1,16 @@
+<table class="table no-margin">
+    <thead>
+      <tr>
+        <th>{% trans %}admin_newsletter_content_sended_createdat{% endtrans %}</th>
+        <th>{% trans %}admin_newsletter_content_sended_sended{% endtrans %}</th>
+        <th>{% trans %}admin_newsletter_content_sended_title{% endtrans %}</th>
+        <th>{% trans %}admin_newsletter_content_sended_sendat{% endtrans %}</th>
+        <th>{% trans %}admin_newsletter_content_sended_actions{% endtrans %}</th>
+      </tr>
+    </thead>
+    <tbody id="table_body_sended_rows">
+      {% for sended in entity.contentSend %}
+        {% include 'MaithNewsletterBundle:Default:sendedRow.html.twig' with { 'sended' : sended } %}
+      {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,12 @@
+<h3>{% trans %}admin_newsletter_user_create_title{% endtrans %}</h3>
+<form action="{{ path('admin_newsletter_save_user') }}" method="post" role="form" onsubmit="return addSimpleUser(this)">
+  <div class="form-group">
+      {{ form_errors(userform.email) }}
+      <label for="{{ userform.email.vars.id }}">{% trans %}admin_newsletter_user_email{% endtrans %}</label>
+      {{ form_widget(userform.email, {'attr' : {'class' : 'form-control'}}) }}
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-default">{% trans %}admin_newsletter_user_save{% endtrans %}</button>
+  </div>	
+      {{ form_rest(userform) }}
+</form>

@@ -1,0 +1,18 @@
+<tr id="sended_row_{{ sended.id }}">
+  <td>{% if sended.createdat %}{{ sended.createdat|date('d/m/Y H:i:s') }}{% endif %}</td>
+  <td>{% if sended.sended %}
+        Si
+      {% else %}
+        No
+      {% endif %}
+  </td>
+  <td>{{ sended.title }}</td>
+  <td>{% if sended.sendat %}{{ sended.sendat|date('d/m/Y') }}{% endif %}</td>
+  <td>
+    <a href='{{ path('admin_newsletter_show_send_content', {'id' : sended.id}) }}' target="_blank" class='btn btn-info'><i class="fa fa-search"></i></a>
+    <a href='{{ path('admin_newsletter_download_sended_users', {'id' : sended.id}) }}' class='btn btn-info'><i class="fa fa-cloud-download"></i></a>
+    {% if not sended.sended %}
+      <a href='{{ path('admin_newsletter_remove_sended_newsletter', {'id' : sended.id}) }}' class='btn btn-danger' onclick="return removeSendedContent(this, 'Esta seguro de querer sacar este envio?');"><i class="fa fa-close"></i></a>
+    {% endif %}
+  </td>
+</tr>
