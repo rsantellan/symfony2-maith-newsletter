@@ -21,7 +21,7 @@ class ContentSendUser
 
 	/**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="userContent")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="contentUser")
      * @ORM\JoinColumn(name="maith_newsletter_user_id", referencedColumnName="id", onDelete="CASCADE")
      */	
 	private $user;

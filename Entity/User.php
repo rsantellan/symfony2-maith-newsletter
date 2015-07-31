@@ -48,6 +48,18 @@ class User
     private $contentUser;
     
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+        
+    /**
      * Get id
      *
      * @return integer 
