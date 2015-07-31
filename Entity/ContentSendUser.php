@@ -67,10 +67,10 @@ class ContentSendUser
     /**
      * Set content
      *
-     * @param \Maith\NewsletterBundle\Entity\Content $content
+     * @param \Maith\NewsletterBundle\Entity\ContentSend $content
      * @return ContentUser
      */
-    public function setContent(\Maith\NewsletterBundle\Entity\Content $content)
+    public function setContent(\Maith\NewsletterBundle\Entity\ContentSend $content)
     {
         $this->content = $content;
 
@@ -80,7 +80,7 @@ class ContentSendUser
     /**
      * Get content
      *
-     * @return \Maith\NewsletterBundle\Entity\Content 
+     * @return \Maith\NewsletterBundle\Entity\ContentSend 
      */
     public function getContent()
     {
