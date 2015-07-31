@@ -72,7 +72,18 @@ class Content
      */
     private $contentSend;
     
-    
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Content
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }    
+        
     /**
      * Get id
      *

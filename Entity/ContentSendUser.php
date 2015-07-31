@@ -35,6 +35,13 @@ class ContentSendUser
     
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="sendat", type="datetime", nullable=true)
+     */
+    private $sendat;
+
+    /**
      * Set active
      *
      * @param boolean $active
@@ -101,5 +108,28 @@ class ContentSendUser
     public function getUser()
     {
         return $this->user;
+    }
+    
+    /**
+     * Set sendat
+     *
+     * @param \DateTime $sendat
+     * @return ContentSend
+     */
+    public function setSendat($sendat)
+    {
+        $this->sendat = $sendat;
+
+        return $this;
+    }
+
+    /**
+     * Get sendat
+     *
+     * @return \DateTime 
+     */
+    public function getSendat()
+    {
+        return $this->sendat;
     }
 }
