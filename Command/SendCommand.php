@@ -61,6 +61,7 @@ class SendCommand extends ContainerAwareCommand{
         $container = $this->getApplication()->getKernel()->getContainer();
 
         $doctrine = $container->get('doctrine');
+        $trackLinks = $container->getParameter('track_links');
         $maximun = 500;
         $onePerNewsletterUser = true;
         $emailPerMessage = 1;
@@ -90,32 +91,40 @@ class SendCommand extends ContainerAwareCommand{
           $counter = 0;
           foreach($users as $user)
           {
-            $page = new HtmlPage($row['body']);
-            $links = $page->getCrawler()->filter('a');
-            foreach($links as $link)
+            $htmlPage = '';
+            if($trackLinks)
             {
-              $link = new \Wa72\HtmlPageDom\HtmlPageCrawler($link);
-              $string = $link->attr('href');
-              if(substr_count($string, 'javascript') == 0 && substr_count($string, 'mailto') == 0)
+              $page = new HtmlPage($row['body']);
+              $links = $page->getCrawler()->filter('a');
+              foreach($links as $link)
               {
-                if(substr_count($string, '?'))
+                $link = new \Wa72\HtmlPageDom\HtmlPageCrawler($link);
+                $string = $link->attr('href');
+                if(substr_count($string, 'javascript') == 0 && substr_count($string, 'mailto') == 0)
                 {
-                  $string .= "&";
+                  if(substr_count($string, '?'))
+                  {
+                    $string .= "&";
+                  }
+                  else
+                  {
+                    $string .= "?";
+                  }
+                  $string .= "nwref=".urlencode($user->getUser()->getEmail())."&nwid=".$row['id'];
                 }
-                else
-                {
-                  $string .= "?";
-                }
-                $string .= "nwref=".urlencode($user->getUser()->getEmail())."&nwid=".$row['id'];
+                $link->attr('href', $string);
               }
-              $link->attr('href', $string);
+              $htmlPage = $page->save();
             }
-            
+            else 
+            {
+              $htmlPage = $row['body'];
+            }
             try
             {
               $message = \Swift_Message::newInstance()
                 ->setFrom(array('hola@tekoaviajes.com.uy' => 'Tekoa Viajes'))
-                ->setBody($page->save())
+                ->setBody($htmlPage)
                 ->setSubject($sended->getContent()->getTitle())
                 ->setContentType("text/html");
               $message->setTo($user->getUser()->getEmail());
