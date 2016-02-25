@@ -13,7 +13,9 @@
     ],
     "require": {
         "php": ">=5.4",
-        "stof/doctrine-extensions-bundle": "~1.1@dev"
+        "stof/doctrine-extensions-bundle": "~1.1@dev",
+        "wa72/htmlpagedom": "1.2.*",
+        "wa72/html-pretty-min": "0.1.*"
     },
     "require-dev": {
         "symfony/framework-bundle": "2.7.*"
