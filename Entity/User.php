@@ -48,17 +48,10 @@ class User
     private $contentUser;
     
     /**
-     * Set id
-     *
-     * @param integer $id
-     * @return User
+     * @ORM\OneToMany(targetEntity="ContentSendUser", mappedBy="user")
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-        
+    private $userSendContent;
+    
     /**
      * Get id
      *
@@ -186,5 +179,38 @@ class User
     public function getContentUser()
     {
         return $this->contentUser;
+    }
+
+    /**
+     * Add userSendContent
+     *
+     * @param \Maith\NewsletterBundle\Entity\ContentSendUser $userSendContent
+     * @return User
+     */
+    public function addUserSendContent(\Maith\NewsletterBundle\Entity\ContentSendUser $userSendContent)
+    {
+        $this->userSendContent[] = $userSendContent;
+
+        return $this;
+    }
+
+    /**
+     * Remove userSendContent
+     *
+     * @param \Maith\NewsletterBundle\Entity\ContentSendUser $userSendContent
+     */
+    public function removeUserSendContent(\Maith\NewsletterBundle\Entity\ContentSendUser $userSendContent)
+    {
+        $this->userSendContent->removeElement($userSendContent);
+    }
+
+    /**
+     * Get userSendContent
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserSendContent()
+    {
+        return $this->userSendContent;
     }
 }

@@ -1,0 +1,12 @@
+<tr id="newsletter_row_{{ content.id }}">
+    <td>{{ content.title }}</td>
+    <td>{{ content.created }}</td>
+    <td>{{ content.sended }}</td>
+    <td>
+        {% if is_expr_granted("hasRole('ROLE_NEWSLETTER_EDIT_CONTENT')") %}
+        <a href="{{ path('admin_newsletter_edit_content', { 'id': content.id })}}" onclick="return createEditNewsletter(this);">
+            <i class="fa fa-eye"></i>
+        </a>
+        {% endif %} 
+    </td>
+</tr>

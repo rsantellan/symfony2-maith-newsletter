@@ -4,8 +4,8 @@
   {% else %}
   <form action="javascript:void(0)" method='POST' onsubmit='return false;'>
     <div class="form-group">
-        <label for="groups-selector">Elegir el grupo:</label>
-        <select class="form-control" id="groups-selector" placeholder="" type="email" name="groups-selector">
+        <label for="groups-selector">Elegir el grupo:</label>  
+        <select multiple="true" class="form-control" id="groups-selector" name="groups-selector">
           {% for group in groups %}
             <option value="{{ group.id }}">{{ group.name }}</option>
           {% endfor %}

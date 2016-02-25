@@ -75,3 +75,59 @@ admin_newsletter_remove_sended_newsletter:
     path:     /{id}/remove-sended-newsletter
     defaults: { _controller: MaithNewsletterBundle:Default:removeSendedContent }    
     requirements: { _method: post }
+    
+admin_newsletter_create_email_layout:    
+    path:     /create-email-layout
+    defaults: { _controller: MaithNewsletterBundle:Default:createEmailLayout }    
+
+admin_newsletter_save_email_layout:    
+    path:     /save-email-layout
+    defaults: { _controller: MaithNewsletterBundle:Default:saveEmailLayout }    
+
+admin_newsletter_edit_email_layout:    
+    path:     /{id}/edit-email-layout
+    defaults: { _controller: MaithNewsletterBundle:Default:editEmailLayout }    
+
+admin_newsletter_update_email_layout:    
+    path:     /{id}/update-email-layout
+    defaults: { _controller: MaithNewsletterBundle:Default:updateEmailLayout } 
+    requirements: { _method: post }
+    
+admin_newsletter_edit_group:    
+    path:     /{id}/edit-group
+    defaults: { _controller: MaithNewsletterBundle:Default:editGroup }      
+    
+admin_newsletter_update_user_group:    
+    path:     /{id}/update-group
+    defaults: { _controller: MaithNewsletterBundle:Default:updateGroup }
+    requirements: { _method: post }
+    
+admin_newsletter_remove_group:    
+    path:     /{id}/remove-group
+    defaults: { _controller: MaithNewsletterBundle:Default:removeGroup }
+    requirements: { _method: post }
+    
+admin_newsletter_add_user_to_group:    
+    path:     /{id}/add-user-to-group
+    defaults: { _controller: MaithNewsletterBundle:Default:addUserOfGroup }
+    requirements: { _method: post }
+
+admin_newsletter_remove_user_of_group:    
+    path:     /{userId}/{groupId}/remove-user-of-group
+    defaults: { _controller: MaithNewsletterBundle:Default:removeUserOfGroup }
+    requirements: { _method: post }
+
+admin_newsletter_list_users:    
+    path:     /search-list-users
+    defaults: { _controller: MaithNewsletterBundle:Default:searchListUsers }
+    requirements: { _method: post }
+    
+admin_newsletter_user_disable:    
+    path:     /{id}/user-disable
+    defaults: { _controller: MaithNewsletterBundle:Default:userDisable }
+    requirements: { _method: post }    
+    
+admin_newsletter_user_enable:    
+    path:     /{id}/user-enable
+    defaults: { _controller: MaithNewsletterBundle:Default:userEnable }
+    requirements: { _method: post }    

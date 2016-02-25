@@ -27,6 +27,7 @@ class ContentSendType extends AbstractType
             //->add('quantitySended')
             //->add('sended')
             //->add('content')
+            ->add('emailLayout')
             ->add('sendToType', 'choice', array(
                       'mapped' => false,
                       'choices' => array(
@@ -36,6 +37,9 @@ class ContentSendType extends AbstractType
                           )
             ))
             ->add('sendlist', 'hidden', array(
+                      'mapped' => false
+            ))
+            ->add('sendlistIds', 'hidden', array(
                       'mapped' => false
             ))
         ;

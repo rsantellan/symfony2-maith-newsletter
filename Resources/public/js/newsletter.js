@@ -1,3 +1,28 @@
+function addToUrlLayout(element)
+{
+  $(element).attr('href', $(element).attr('basehref') + '?layout='+$('#emaillayouts').val());
+  
+}
+
+function retrieveTableNewsletter(pagerUrl)
+{
+  $.blockUI();
+  $.ajax({
+      url: pagerUrl,
+      cache: false,
+      success: function(data){
+        $('#tableNewsletterContainer').html(data.html);
+        
+        
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false; 
+}
+
 function addSimpleUser(form)
 {
   $.blockUI();
@@ -25,6 +50,26 @@ function addSimpleUser(form)
   return false;
 }
 
+function searchUser(form)
+{
+  $.blockUI();
+  $.ajax({
+      url: $(form).attr('action'),
+      data: $(form).serialize(),
+      type: 'post',
+      dataType: 'json',
+      success: function(data){
+        $('#newsletter-global-container').fadeOut('slow');    
+        $('#newsletter-compose-container').html(data.html);  
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false;
+}
+
 function addGroup(form)
 {
   $.blockUI();
@@ -37,6 +82,7 @@ function addGroup(form)
         if(data.result == 'true' || data.result == true)
         {
             toastr.info(data.message);
+            $('#groups_table_body').append(data.listhtml);
         }
         else
         {
@@ -52,8 +98,173 @@ function addGroup(form)
   return false;
 }
 
+function editGroup(element)
+{
+  $('#newsletter-global-container').fadeOut('slow');  
+  $.blockUI();
+  $.ajax({
+      url: $(element).attr('href'),
+      cache: false,
+      success: function(data){
+        $('#newsletter-compose-container').html(data.html);
+        setTimeout(function(){
+            startUserSelector();
+          }, 200);
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false; 
+}
+
+function saveEditGroup(form)
+{
+  $.blockUI();
+  $.ajax({
+      url: $(form).attr('action'),
+      data: $(form).serialize(),
+      type: 'post',
+      dataType: 'json',
+      success: function(data){
+        if(data.result == 'true' || data.result == true)
+        {
+            toastr.info(data.message);
+            $('#group_row_'+data.id).replaceWith(data.html);
+        }
+        else
+        {
+            toastr.error(data.message);
+        }
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false;
+}
+
+function addUserToGroup(form)
+{
+  $.blockUI();
+  $.ajax({
+      url: $(form).attr('action'),
+      data: $(form).serialize(),
+      type: 'post',
+      dataType: 'json',
+      success: function(data){
+        if(data.result == 'true' || data.result == true)
+        {
+            toastr.info(data.message);
+            $('#first_user_group_container').append(data.html);
+            $('#users-selector').val('');
+        }
+        else
+        {
+            toastr.error(data.message);
+        }
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false;
+}
+
+function activeDisableUser(element)
+{
+  $.blockUI();
+  $.ajax({
+      url: $(element).attr('href'),
+      type: 'post',
+      dataType: 'json',
+      success: function(data){
+        if(data.result == 'true' || data.result == true)
+        {
+            toastr.info(data.message);
+            $('#user_list_row_'+data.id).replaceWith(data.html);
+        }
+        else
+        {
+            toastr.error(data.message);
+        }
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false;
+}
+
+function removeGroup(element, question)
+{
+  if(!confirm(question))  
+  {
+      return;
+  }
+  $.blockUI();
+  $.ajax({
+      url: $(element).attr('href'),
+      type: 'post',
+      dataType: 'json',
+      success: function(data){
+        if(data.result == 'true' || data.result == true)
+        {
+            toastr.info(data.message);
+            $('#newsletter-global-container').fadeIn('slow');
+            $('#newsletter-compose-container').html('');
+            $('#group_row_'+data.id).remove();
+        }
+        else
+        {
+            toastr.error(data.message);
+        }
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false;
+}
+
+function removeUserGroup(element, question)
+{
+  if(!confirm(question))  
+  {
+      return;
+  }
+  $.blockUI();
+  $.ajax({
+      url: $(element).attr('href'),
+      type: 'post',
+      dataType: 'json',
+      success: function(data){
+        if(data.result == 'true' || data.result == true)
+        {
+            toastr.info(data.message);
+            $('#user_of_group_'+data.userId+'_'+data.groupId).remove();
+        }
+        else
+        {
+            toastr.error(data.message);
+        }
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false;
+}
+
 function createEditNewsletter(element)
 {
+  $('#newsletter-global-container').fadeOut('slow');  
   $.blockUI();
   $.ajax({
       url: $(element).attr('href'),
@@ -74,6 +285,71 @@ function createEditNewsletter(element)
   return false; 
 }
 
+function createEditEmailLayout(element)
+{
+  $('#newsletter-global-container').fadeOut('slow');  
+  $.blockUI();
+  $.ajax({
+      url: $(element).attr('href'),
+      cache: false,
+      success: function(data){
+        $('#newsletter-compose-container').html(data.html);
+        setTimeout(function(){
+          startComposerTinyMCE();
+          $(".datepicker").datepicker();
+        }, 200);
+        
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false; 
+}
+
+function saveEmailLayoutData(form)
+{
+  tinyMCE.triggerSave();
+  $.blockUI();
+  $.ajax({
+      url: $(form).attr('action'),
+      data: $(form).serialize(),
+      type: 'post',
+      dataType: 'json',
+      success: function(data){
+        if(data.result == 'true' || data.result == true)
+        {
+            toastr.info(data.message);
+            if(data.isupdate != undefined && (data.isupdate == 'true' || data.isupdate == true))
+            {
+              $('#email_layout_row_'+data.id).replaceWith(data.listHtml);
+            }
+            else
+            {
+              if(data.listHtml != undefined)
+              {
+                $('#email_layout_table_body').append(data.listHtml);
+              }  
+            }
+            
+            $('#newsletter-global-container').fadeIn('slow');
+            $('#newsletter-compose-container').html('');
+        }
+        else
+        {
+            toastr.error(data.message);
+        }
+        $('#newsletter-compose-container').html(data.html);
+      }, 
+      complete: function()
+      {
+        $.unblockUI();
+      }
+  });
+  return false;
+}
+
 function saveData(form)
 {
   tinyMCE.triggerSave();
@@ -89,7 +365,7 @@ function saveData(form)
             toastr.info(data.message);
             if(data.listHtml != undefined)
             {
-              $('#content-list-container').append(data.listHtml);
+              $('#newsletter_body_container').append(data.listHtml);
             }
         }
         else
@@ -210,6 +486,15 @@ function saveSendData(form)
   if($('#maith_newsletterbundle_contentsend_sendToType').val() == 3)
   {
     $('#maith_newsletterbundle_contentsend_sendlist').val($('#users-selector').val());
+    var idsOfGroups = [];
+    if($('#group-users-container').length > 0)
+    {
+        $('#group-users-container input:checkbox:checked').each(function(index, value){ 
+            idsOfGroups.push($(value).val());
+        });
+        
+        $('#maith_newsletterbundle_contentsend_sendlistIds').val(idsOfGroups.join(','));
+    }
   }
   
   $.ajax({
@@ -221,7 +506,7 @@ function saveSendData(form)
         if(data.result == 'true' || data.result == true)
         {
             toastr.info(data.message);
-            $('#table_body_sended_rows').prepend(data.html);
+            $('#table_body_not_sended_rows').prepend(data.html);
         }
         else
         {
@@ -286,18 +571,24 @@ function startComposerTinyMCE()
 	  mode : "textareas",
       editor_selector: 'mceEditor',
 	  theme: "modern",
+      relative_urls : false,
+      remove_script_host : false,
+      convert_urls : true,
 	  plugins: [
 		  "advlist autolink lists link image charmap print preview hr anchor pagebreak",
 		  "searchreplace wordcount visualblocks visualchars code fullscreen",
 		  "insertdatetime media nonbreaking save table contextmenu directionality",
-		  "emoticons template paste textcolor"
+		  "emoticons template paste textcolor responsivefilemanager"
 	  ],
 	  toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-	  toolbar2: "print preview media | forecolor backcolor emoticons",
-			image_advtab: true,
+	  toolbar2: "print preview media | forecolor backcolor emoticons responsivefilemanager",
+      image_advtab: true,
 	  forced_root_block : "",
 	  force_br_newlines : true,
-	  force_p_newlines : false
+	  force_p_newlines : false,
+      external_filemanager_path:"/bundles/maithcommonadmin/filemanager/",
+      filemanager_title:"Responsive Filemanager" ,
+      external_plugins: { "filemanager" : "/bundles/maithcommonadmin/filemanager/plugin.min.js"}
 
   });  
 }

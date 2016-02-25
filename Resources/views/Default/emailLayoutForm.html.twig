@@ -1,0 +1,17 @@
+<button type="button" class="btn btn-info pull-right" onclick="$('#newsletter-global-container').fadeIn('slow');$('#newsletter-compose-container').html('');" >{% trans %}admin_newsletter_content_show_list{% endtrans %}</button>
+<form action="{{ path('admin_newsletter_save_email_layout') }}" method="post" role="form" onsubmit="return saveEmailLayoutData(this)">
+  <div class="form-group">
+      {{ form_errors(form.name) }}
+      <label for="{{ form.name.vars.id }}">{% trans %}admin_newsletter_email_layout_name{% endtrans %}</label>
+      {{ form_widget(form.name, {'attr' : {'class' : 'form-control'}}) }}
+  </div>
+  <div class="form-group">
+      {{ form_errors(form.body) }}
+      <label for="{{ form.body.vars.id }}">{% trans %}admin_newsletter_email_layout_html{% endtrans %}</label>
+      {{ form_widget(form.body, {'attr' : {'class' : 'form-control mceEditor'}}) }}
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-default">{% trans %}admin_newsletter_email_layout_save{% endtrans %}</button>
+  </div>	
+      {{ form_rest(form) }}
+</form>

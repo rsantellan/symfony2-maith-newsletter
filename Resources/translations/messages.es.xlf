@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="es" datatype="plaintext" original="file.ext">
+  <file source-language="es" target-language="es" datatype="plaintext" original="file.ext">
     <body>
       <trans-unit id="d636475686b66cba036e10d0cab83548" resname="admin_newsletter_user_create_title">
         <source>admin_newsletter_user_create_title</source>
-        <target>Agregar usuario</target>
+        <target>Usuarios</target>
       </trans-unit>
       <trans-unit id="997ccc2a81308503255164900426097e" resname="admin_newsletter_user_email">
         <source>admin_newsletter_user_email</source>
@@ -36,7 +36,7 @@
       </trans-unit>
       <trans-unit id="acca04b92a0eb235043d280bb3eee5b5" resname="admin_newsletter_group_listado">
         <source>admin_newsletter_group_listado</source>
-        <target>Listado de grupos</target>
+        <target>Listado</target>
       </trans-unit>
       <trans-unit id="9fdaa27ebf5ace3de8de0f48c1d14f63" resname="admin_newsletter_content_list">
         <source>admin_newsletter_content_list</source>
@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="56b4a7ff0800952d8735733f4288c48f" resname="admin_newsletter_group_create_title">
         <source>admin_newsletter_group_create_title</source>
-        <target>Crear grupo</target>
+        <target>Grupos</target>
       </trans-unit>
       <trans-unit id="d1476be9885c0f2bdc1d05a7cba23192" resname="admin_newsletter_group_name">
         <source>admin_newsletter_group_name</source>
@@ -86,9 +86,157 @@
         <source>admin_newsletter_content_sended_actions</source>
         <target>Acciones</target>
       </trans-unit>
-      <trans-unit id="8c519b1e10e019d6de1c53c5ec8babb1121" resname="admin_newsletter_content_sended_sended">
+      <trans-unit id="f019b1bd4bdbe662a10659cb20dc104a" resname="admin_newsletter_content_sended_sended">
         <source>admin_newsletter_content_sended_sended</source>
         <target>Enviado</target>
+      </trans-unit>
+      <trans-unit id="135d45ac9efa607569cdd79b27d6463e" resname="admin_newsletter_content_title">
+        <source>admin_newsletter_content_title</source>
+        <target>Titulo</target>
+      </trans-unit>
+      <trans-unit id="2ea456aeb0a5c5d56d1eaa6ea1101237" resname="admin_newsletter_content_created">
+        <source>admin_newsletter_content_created</source>
+        <target>Creados</target>
+      </trans-unit>
+      <trans-unit id="9a673485567be79d87a7c2460a6220cc" resname="admin_newsletter_content_sended">
+        <source>admin_newsletter_content_sended</source>
+        <target>Enviados</target>
+      </trans-unit>
+      <trans-unit id="34ddfd412a4e33c6127712f194ec83f8" resname="admin_newsletter_content_actions">
+        <source>admin_newsletter_content_actions</source>
+        <target>Acciones</target>
+      </trans-unit>
+      <trans-unit id="ed3847775f1456ea5d104623bafb3554" resname="admin_newsletter_content_show_list">
+        <source>admin_newsletter_content_show_list</source>
+        <target>Mostrar listado</target>
+      </trans-unit>
+      <trans-unit id="2e365a5ac061a8615044f02e42d7c166" resname="admin_newsletter_content_content">
+        <source>admin_newsletter_content_content</source>
+        <target>Contenido</target>
+      </trans-unit>
+      <trans-unit id="31f3098b867d1e4a59a7680cade1934d" resname="admin_newsletter_content_send_date">
+        <source>admin_newsletter_content_send_date</source>
+        <target>Enviar el</target>
+      </trans-unit>
+      <trans-unit id="0e59eb04eab7db87dab551c630a6202b" resname="admin_newsletter_content_send_to">
+        <source>admin_newsletter_content_send_to</source>
+        <target>Enviar a</target>
+      </trans-unit>
+      <trans-unit id="56385ed048e2edbc257bd5085b6f8be3" resname="admin_newsletter_content_create">
+        <source>admin_newsletter_content_create</source>
+        <target>Crear</target>
+      </trans-unit>
+      <trans-unit id="fcae20fa4840c7cf4b21aa15b510aaee" resname="admin_newsletter_content_not_sended_list">
+        <source>admin_newsletter_content_not_sended_list</source>
+        <target>Listado de no enviados</target>
+      </trans-unit>
+      <trans-unit id="ccddbe6cda2848caae6db7faaa863532" resname="admin_newsletter_email_layouts_title">
+        <source>admin_newsletter_email_layouts_title</source>
+        <target>Diseño del email</target>
+      </trans-unit>
+      <trans-unit id="d68cbaddbb6997be66cde146d4da5808" resname="admin_newsletter_email_layout_name">
+        <source>admin_newsletter_email_layout_name</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="9b89102057612f4bd9c6ae47057bebb8" resname="admin_newsletter_email_layout_html">
+        <source>admin_newsletter_email_layout_html</source>
+        <target>Cuerpo del mensaje</target>
+      </trans-unit>
+      <trans-unit id="aa3ce8b9bf2161085774e2a3a1fc6010" resname="admin_newsletter_email_layout_save">
+        <source>admin_newsletter_email_layout_save</source>
+        <target>Guardar</target>
+      </trans-unit>
+      <trans-unit id="bdc2445688a18f63465afef763473b04" resname="admin_newsletter_email_layout_actions">
+        <source>admin_newsletter_email_layout_actions</source>
+        <target>Acciones</target>
+      </trans-unit>
+      <trans-unit id="eaf457df31a4935de4e9055e73f07ece" resname="admin_newsletter_email_layout_create">
+        <source>admin_newsletter_email_layout_create</source>
+        <target>Crear</target>
+      </trans-unit>
+      <trans-unit id="2beca62ffd4c0d287951abbf9b820982" resname="admin_newsletter_user_search_word">
+        <source>admin_newsletter_user_search_word</source>
+        <target>Busqueda por: </target>
+      </trans-unit>
+      <trans-unit id="8cf0364f27776d361ef8118cb7b6d87d" resname="admin_newsletter_user_search_quantity">
+        <source>admin_newsletter_user_search_quantity</source>
+        <target>con la siguiente cantidad de resultados:</target>
+      </trans-unit>
+      <trans-unit id="4fe238819f2ef9473ec7c09890b0ead9" resname="admin_newsletter_user_search_limit_reached">
+        <source>admin_newsletter_user_search_limit_reached</source>
+        <target>Limite alcanzado refina la busqueda para encontrar mas datos.</target>
+      </trans-unit>
+      <trans-unit id="a23ec2e02bdbdf3ad3cb634c89ea5111" resname="admin_newsletter_user_active">
+        <source>admin_newsletter_user_active</source>
+        <target>Activo</target>
+      </trans-unit>
+      <trans-unit id="7eb50bb27e8ffcf2b6a24b076bacccf4" resname="admin_newsletter_user_actions">
+        <source>admin_newsletter_user_actions</source>
+        <target>Acciones</target>
+      </trans-unit>
+      <trans-unit id="057fd4db2e95a7af02cae966e06b373b" resname="admin_newsletter_user_active_true">
+        <source>admin_newsletter_user_active_true</source>
+        <target>Si</target>
+      </trans-unit>
+      <trans-unit id="27c3bc42f057f7b295c29af39252416a" resname="admin_newsletter_user_active_false">
+        <source>admin_newsletter_user_active_false</source>
+        <target>No</target>
+      </trans-unit>
+      <trans-unit id="acef01b4559571fb19c5ffb775262b66" resname="admin_newsletter_user_do_disable">
+        <source>admin_newsletter_user_do_disable</source>
+        <target>Desactivar</target>
+      </trans-unit>
+      <trans-unit id="0ff97c75ab928c33aac52a646c99eca9" resname="admin_newsletter_user_do_enable">
+        <source>admin_newsletter_user_do_enable</source>
+        <target>Activar</target>
+      </trans-unit>
+      <trans-unit id="e3316086d0214879c22b6802a2c7b1c9" resname="admin_newsletter_group_remove_question">
+        <source>admin_newsletter_group_remove_question</source>
+        <target>¿Esta seguro de querer eliminar el grupo?</target>
+      </trans-unit>
+      <trans-unit id="78a1cfbfe4211ba54cf4178a474a81de" resname="admin_newsletter_compose_choose_user">
+        <source>admin_newsletter_compose_choose_user</source>
+        <target>Elegir usuario</target>
+      </trans-unit>
+      <trans-unit id="15f6314e219d0438fc39347077be798d" resname="admin_newsletter_user_search_by_email">
+        <source>admin_newsletter_user_search_by_email</source>
+        <target>Buscar por email</target>
+      </trans-unit>
+      <trans-unit id="5f26458e994b3dde966ff70f3637be3f" resname="admin_newsletter_user_search">
+        <source>admin_newsletter_user_search</source>
+        <target>Buscar</target>
+      </trans-unit>
+      <trans-unit id="41075cd1850307fc7ed11aca968253e7" resname="admin_newsletter_group_actions">
+        <source>admin_newsletter_group_actions</source>
+        <target>Acciones</target>
+      </trans-unit>
+      <trans-unit id="2fbf854fe8ae228c04e1706a9ee4e58d" resname="admin_newsletter_user_group_update_title">
+        <source>admin_newsletter_user_group_update_title</source>
+        <target>Actualizar grupo</target>
+      </trans-unit>
+      <trans-unit id="4a590038abaf980f3d7d4464efcc73b4" resname="admin_newsletter_user_group_name">
+        <source>admin_newsletter_user_group_name</source>
+        <target>Nombre</target>
+      </trans-unit>
+      <trans-unit id="ba7b6b0e9bef8ea72542164cdd26511a" resname="admin_newsletter_user_group_save">
+        <source>admin_newsletter_user_group_save</source>
+        <target>Guardar</target>
+      </trans-unit>
+      <trans-unit id="557f080c16631840e87faa4975a7566c" resname="admin_newsletter_user_group_choose_user">
+        <source>admin_newsletter_user_group_choose_user</source>
+        <target>Elegir usuario</target>
+      </trans-unit>
+      <trans-unit id="c01e778d9a1b93c51ca249401e47709b" resname="admin_newsletter_user_group_remove_question">
+        <source>admin_newsletter_user_group_remove_question</source>
+        <target>¿Esta seguro de querer eliminar el usuario del grupo?</target>
+      </trans-unit>
+      <trans-unit id="499501cea2502ba98615e99bff71f41a" resname="admin_newsletter_email_layout_default">
+        <source>admin_newsletter_email_layout_default</source>
+        <target>Base</target>
+      </trans-unit>
+      <trans-unit id="a01d92ae64b5dc0be89d19170f1225ab" resname="admin_newsletter_content_send_layout">
+        <source>admin_newsletter_content_send_layout</source>
+        <target>Elegir tema</target>
       </trans-unit>
     </body>
   </file>

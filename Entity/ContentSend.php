@@ -78,7 +78,7 @@ class ContentSend
      * @ORM\ManyToOne(targetEntity="Content", inversedBy="contentSend")
      * @ORM\JoinColumn(name="maith_newsletter_content_id", referencedColumnName="id")
      */
-	private $content;
+    private $content;
     
     /**
      * @ORM\OneToMany(targetEntity="ContentSendUser", mappedBy="content")
@@ -86,16 +86,10 @@ class ContentSend
     private $contentUser;    
     
     /**
-     * Set id
-     *
-     * @param integer $id
-     * @return ContentSend
+     * @ORM\ManyToOne(targetEntity="EmailLayout", inversedBy="contentSend")
+     * @ORM\JoinColumn(name="maith_newsletter_email_layout_id", referencedColumnName="id")
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }    
+    private $emailLayout;    
     
     /**
      * Get id
@@ -330,5 +324,29 @@ class ContentSend
     public function getSendat()
     {
         return $this->sendat;
+    }
+
+    /**
+     * Set emailLayout
+     *
+     * @param \Maith\NewsletterBundle\Entity\EmailLayout $emailLayout
+     *
+     * @return ContentSend
+     */
+    public function setEmailLayout(\Maith\NewsletterBundle\Entity\EmailLayout $emailLayout = null)
+    {
+        $this->emailLayout = $emailLayout;
+
+        return $this;
+    }
+
+    /**
+     * Get emailLayout
+     *
+     * @return \Maith\NewsletterBundle\Entity\EmailLayout
+     */
+    public function getEmailLayout()
+    {
+        return $this->emailLayout;
     }
 }

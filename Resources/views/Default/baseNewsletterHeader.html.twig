@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <title>Tekoa Viajes</title>
+    <style type="text/css">
+        /* Based on The MailChimp Reset INLINE: Yes. */
+        /* Client-specific Styles */
+        #outlook a {
+          padding: 0;
+        }
+        /* Force Outlook to provide a "view in browser" menu link. */
+        body {
+          width: 100% !important;
+          -webkit-font-smoothing: antialiased;
+          -webkit-text-size-adjust: 100%;
+          -ms-text-size-adjust: 100%;
+          margin: 0;
+          padding: 0;
+        }
+        /* Prevent Webkit and Windows Mobile platforms from changing default font sizes.*/
+        .ExternalClass {
+          width: 100%;
+        }
+        /* Force Hotmail to display emails at full width */
+        .ReadMsgBody {
+          width: 100%;
+        }
+        /* Force Hotmail to display emails at full width */
+        .ExternalClass,
+        .ExternalClass p,
+        .ExternalClass span,
+        .ExternalClass font,
+        .ExternalClass td,
+        .ExternalClass div {
+          line-height: 100%;
+        }
+        /* Forces Hotmail to display normal line spacing.  More on that: http://www.emailonacid.com/forum/viewthread/43/ */
+        #backgroundTable {
+          margin: 0;
+          padding: 0;
+          width: 100% !important;
+          line-height: 100% !important;
+        }
+        /* Weird Yahoo links and border bottom */
+        .yshortcuts a {
+          border-bottom: none !important;
+        }
+        /* End reset */
+        /* Some sensible defaults for images
+        Bring inline: Yes. */
+        img {
+          outline: none;
+          text-decoration: none;
+          -ms-interpolation-mode: bicubic;
+        }
+        a img {
+          border: none;
+        }
+        .image_fix {
+          display: block;
+        }
+        img {
+          display: block;
+        }
+        /* Hotmail header color reset
+        Bring inline: Yes. */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          color: black !important;
+        }
+        h1 a,
+        h2 a,
+        h3 a,
+        h4 a,
+        h5 a,
+        h6 a {
+          color: blue !important;
+        }
+        h1 a:active,
+        h2 a:active,
+        h3 a:active,
+        h4 a:active,
+        h5 a:active,
+        h6 a:active {
+          color: red !important;
+          /* Preferably not the same color as the normal header link color.  There is limited support for psuedo classes in email clients, this was added just for good measure. */
+        }
+        h1 a:visited,
+        h2 a:visited,
+        h3 a:visited,
+        h4 a:visited,
+        h5 a:visited,
+        h6 a:visited {
+          color: purple !important;
+          /* Preferably not the same color as the normal header link color. There is limited support for psuedo classes in email clients, this was added just for good measure. */
+        }
+        /* Outlook 07, 10 Padding issue fix
+        Bring inline: No.*/
+        table td {
+          border-collapse: collapse;
+        }
+        /* Remove spacing around Outlook 07, 10 tables
+        Bring inline: Yes */
+        table {
+          border-collapse: collapse;
+          mso-table-lspace: 0pt;
+          mso-table-rspace: 0pt;
+          border-spacing: 0;
+        }
+        /* Styling your links has become much simpler with the new Yahoo.  In fact, it falls in line with the main credo of styling in email and make sure to bring your styles inline.  Your link colors will be uniform across clients when brought inline.
+        Bring inline: Yes. */
+        a {
+          color: orange;
+        }
+        hr {
+          display: block;
+          height: 1px;
+          border: 0;
+          border-top: 1px solid #FDF7F7!important;
+          margin: 1em 0;
+          padding: 0;
+        }
+        @media only screen and (max-width: 600px) {
+          body {
+            width: auto!important
+          }
+          table[class="content_block"] {
+            width: 100%!important;
+          }
+          .full {
+            width: 80%!important;
+            float: none !important;
+          }
+          .full-width {
+            width: 100%!important;
+            float: none !important;
+          }
+          .nav {
+            width: 100% !important;
+            margin: 0 auto;
+          }
+          .logo {
+            width: 100% !important;
+            text-align: center !important;
+            font-weight: normal;
+          }
+          .nav td {
+            text-align: center!important
+          }
+          table[class="col-3"] {
+            /* unset table align="left/right" */
+            float: none !important;
+            width: 100% !important;
+            /* change left/right padding and margins to top/bottom ones */
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+          }
+          table[class="col-none"] {
+            display: none;
+            visibility: hidden;
+          }
+          /* align images right and shrink them a bit */
+          img[class="col-3-img"] {
+            float: none!important;
+            margin: 0 auto;
+            display: block;
+            max-width: 100%!important
+          }
+        }
+      </style>
+    </head>
+
+    <body style="margin:0; padding: 0;" bgcolor="#ffffff" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+      {{ bodycontent | raw }}
+    </body>
+  </html>
+      

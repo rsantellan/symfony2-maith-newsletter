@@ -1,0 +1,22 @@
+<tr id="user_list_row_{{ user['id'] }}">
+    <td>{{ user['email']}}</td>
+    <td>
+        {% if user['active'] == "1" %}
+            {% trans %}admin_newsletter_user_active_true{% endtrans %}
+        {% else %}
+            {% trans %}admin_newsletter_user_active_false{% endtrans %}
+        {% endif %}
+    </td>
+    <td>
+        {% if user['active'] == "1" %}
+            <a href="{{ path('admin_newsletter_user_disable', {'id' : user['id']})}}" onclick="return activeDisableUser(this)" class="btn btn-warning">
+            {% trans %}admin_newsletter_user_do_disable{% endtrans %}
+            </a>
+        {% else %}
+            <a href="{{ path('admin_newsletter_user_enable', {'id' : user['id']})}}" onclick="return activeDisableUser(this)" class="btn btn-info">
+            {% trans %}admin_newsletter_user_do_enable{% endtrans %}
+            </a>
+        {% endif %}
+        {{ user['id']}}
+    </td>
+</tr> 

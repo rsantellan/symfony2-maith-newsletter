@@ -1,0 +1,4 @@
+<span id="user_of_group_{{user.id}}_{{ group.id }}">
+    {{ user.email }}
+    <a href="{{ path('admin_newsletter_remove_user_of_group', { 'userId': user.id, 'groupId': group.id }) }}" class="btn" onclick='return removeUserGroup(this, "{% trans %}admin_newsletter_user_group_remove_question{% endtrans %}");'><i class="fa fa fa-remove"></i></a> 
+</span>

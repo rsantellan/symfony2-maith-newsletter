@@ -1,0 +1,11 @@
+<tr id="group_row_{{ group.id }}">
+    <td>{{ group.name }}</td>
+    <td>
+        {% if is_expr_granted("hasRole('ROLE_NEWSLETTER_EDIT_GROUP')") %}
+        <a href="{{ path('admin_newsletter_edit_group', { 'id': group.id }) }}" class="btn" onclick='return editGroup(this);'><i class="fa fa fa-pencil"></i></a> 
+        {% endif %}
+        {% if is_expr_granted("hasRole('ROLE_NEWSLETTER_REMOVE_GROUP')") %}
+        <a href="{{ path('admin_newsletter_remove_group', { 'id': group.id }) }}" class="btn" onclick='return removeGroup(this, "{% trans %}admin_newsletter_group_remove_question{% endtrans %}");'><i class="fa fa fa-remove"></i></a> 
+        {% endif %}
+    </td>
+</tr>

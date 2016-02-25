@@ -1,0 +1,8 @@
+<tr id="email_layout_row_{{ emailLayout.id}}">
+    <td>{{ emailLayout.name }}</td>
+    <td>
+        {% if is_expr_granted("hasRole('ROLE_NEWSLETTER_EDIT_EMAIL_LAYOUT')") %}
+        <a href="{{ path('admin_newsletter_edit_email_layout', { 'id': emailLayout.id }) }}" class="btn" onclick='return createEditEmailLayout(this);'><i class="fa fa fa-pencil"></i></a> 
+        {% endif %}
+    </td>
+</tr>

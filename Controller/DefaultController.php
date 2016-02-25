@@ -14,12 +14,14 @@ use Maith\NewsletterBundle\Entity\User;
 use Maith\NewsletterBundle\Entity\UserGroup;
 use Maith\NewsletterBundle\Entity\Content;
 use Maith\NewsletterBundle\Entity\ContentSend;
+use Maith\NewsletterBundle\Entity\EmailLayout;
 
 use Maith\NewsletterBundle\Form\UserType;
 use Maith\NewsletterBundle\Form\UserGroupType;
 use Maith\NewsletterBundle\Form\ContentType;
 use Maith\NewsletterBundle\Form\ContentEditType;
 use Maith\NewsletterBundle\Form\ContentSendType;
+use Maith\NewsletterBundle\Form\EmailLayoutType;
 
 /**
  * 
@@ -40,6 +42,11 @@ class DefaultController extends Controller
         $quantity = $row['quantity'];
         $groups = $em->getRepository('MaithNewsletterBundle:UserGroup')->findAll();
         
+        $query = $em->createQuery("select e.id, e.name from MaithNewsletterBundle:EmailLayout e order by e.name");
+      
+        $emailLayouts = $query->getResult();
+        
+        // Forms
         $createUserForm = $this->createNewNewsletterUserForm(new User());
         $createGroupForm = $this->createNewNewsletterGroupForm(new UserGroup());
         $uploadUsersForm = $this->uploadUsersForm();
@@ -52,19 +59,60 @@ class DefaultController extends Controller
             'quantity' => $quantity,
             'contents' => $this->retrieveCreatedContents(0, $this->limitContent),
             'limitContent' => $this->limitContent,
-            'activemenu' => 'newsletter'
+            'activemenu' => 'newsletter',
+            'pager' => 0,
+            'emailLayouts' => $emailLayouts,
         ));
+    }
+    
+    public function changeContentPageAction(Request $request, $page)
+    {
+        $responseData = array(
+            'result' => true,
+            'html' => '',
+        );
+        $offset = ($page * $this->limitContent);// + $this->limitContent;
+        //'contents' : contents, 'pager': 0, 'limitContent' : limitContent
+        $responseData['html'] = $this->renderView('MaithNewsletterBundle:Default:_contentTable.html.twig', array(
+          'contents' => $this->retrieveCreatedContents($offset, $this->limitContent),
+          'pager' => $page,
+          'limitContent' => $this->limitContent,
+        ));
+        
+        
+        $returnJson = new JsonResponse();
+        $returnJson->setData($responseData);
+        return $returnJson;
     }
     
     private function retrieveCreatedContents($offset = 0, $limit = 10)
     {
       $em = $this->getDoctrine()->getManager();
-        
-      $query = $em->createQuery("select c from MaithNewsletterBundle:Content c order by c.createdat asc")
+      $query = $em->createQuery("select c from MaithNewsletterBundle:Content c where c.active = true order by c.createdat desc")
                           ->setFirstResult($offset)
                           ->setMaxResults($limit);
-
-      return $query->getResult();
+      
+      $result = $query->getResult();
+      $data = array();
+      foreach($result as $content)
+      {
+          $aux = array(
+              'title' => $content->getTitle(), 
+              'id' => $content->getId(),
+              'created' => 0,
+              'sended' => 0,
+            );
+          foreach($content->getContentSend() as $sended)
+          {
+              $aux['created'] = $aux['created'] + 1;
+              if($sended->getSended())
+              {
+                  $aux['sended'] = $aux['sended'] + 1;
+              }
+          }
+          $data[$content->getId()] = $aux;
+      }
+      return $data;
     }
     
     private function uploadUsersForm()
@@ -102,6 +150,21 @@ class DefaultController extends Controller
         return $form;
     }
     
+    private function createNewEmailLayoutForm(EmailLayout $entity)
+    {
+        $form = $this->createForm(new EmailLayoutType(), $entity, array(
+            'method' => 'POST',
+        ));
+
+        return $form;
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_ADD_USER")
+     */
     public function createSimpleUserAction(Request $request)
     {
         $entity = new User();
@@ -140,6 +203,12 @@ class DefaultController extends Controller
         return $returnJson;
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_ADD_GROUP")
+     */
     public function createGroupAction(Request $request)
     {
         $entity = new UserGroup();
@@ -150,6 +219,7 @@ class DefaultController extends Controller
             'result' => false,
             'message' => 'Error en el formulario',
             'html' => '',
+            'listhtml' => '',
         );
         if ($form->isValid()) {
             try{
@@ -157,6 +227,9 @@ class DefaultController extends Controller
                 $em->persist($entity);
                 $em->flush();
                 $responseData['message'] = 'Datos guardados con exito';
+                $responseData['listhtml'] = $this->renderView('MaithNewsletterBundle:Default:_groupRow.html.twig', array(
+                    'group' => $entity
+                ));
             }catch(\Exception $e)
             {
                 $responseData['message'] = 'El grupo ya existe.';
@@ -178,6 +251,11 @@ class DefaultController extends Controller
         return $returnJson;
     }
     
+    /**
+     * 
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_ADD_CONTENT")
+     */
     public function createContentAction()
     {
       $responseData = array(
@@ -197,6 +275,13 @@ class DefaultController extends Controller
       
     }
     
+    /**
+     * 
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
     public function editContentAction($id)
     {
       $em = $this->getDoctrine()->getManager();
@@ -221,13 +306,25 @@ class DefaultController extends Controller
       $formSend = $this->createForm(new ContentSendType(), new ContentSend(), array(
           'method' => 'POST',
       ));
+      $em = $this->getDoctrine()->getManager();
+      $emailLayouts = $em->getRepository('MaithNewsletterBundle:EmailLayout')->findAll();
+      
       return $this->renderView('MaithNewsletterBundle:Default:editForm.html.twig', array(
               'form' => $form->createView(),
               'formSend' => $formSend->createView(),
               'entity' => $entity,
+              'emailLayouts' => $emailLayouts,
             ));
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
     public function updateContentAction(Request $request, $id)
     {
       $em = $this->getDoctrine()->getManager();
@@ -261,6 +358,12 @@ class DefaultController extends Controller
       return $returnJson;
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_ADD_CONTENT")
+     */
     public function saveContentAction(Request $request)
     {
       $entity = new Content();
@@ -278,8 +381,14 @@ class DefaultController extends Controller
             $em->flush();
             $responseData['message'] = 'Guardado con exito';
             $responseData['html'] = $this->createEditContent($entity, $form);
-            $responseData['listHtml'] = $this->renderView('MaithNewsletterBundle:Default:contentpreviewitem.html.twig', array(
-                'content' => $entity
+            $aux = array(
+              'title' => $entity->getTitle(), 
+              'id' => $entity->getId(),
+              'created' => 0,
+              'sended' => 0,
+            );
+            $responseData['listHtml'] = $this->renderView('MaithNewsletterBundle:Default:_contentTableRow.html.twig', array(
+                'content' => $aux
             ));
             $responseData['result'] = true;
         }else{
@@ -293,6 +402,11 @@ class DefaultController extends Controller
       return $returnJson;
     }
     
+    /**
+     * 
+     * @return StreamedResponse
+     * @Secure(roles="ROLE_NEWSLETTER_DOWNLOAD_USERS")
+     */
     public function downloadUsersAction()
     {
         $response = new StreamedResponse();
@@ -325,6 +439,12 @@ class DefaultController extends Controller
         return $response;
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @return type
+     * @Secure(roles="ROLE_NEWSLETTER_UPLOAD_USERS")
+     */
     public function uploadUsersFileAction(Request $request)
     {
         $uploadUsersForm = $this->uploadUsersForm();
@@ -363,21 +483,60 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('admin_newsletter_index'));
     }
     
-    public function previewContentAction($id)
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return type
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
+    public function previewContentAction(Request $request, $id)
     {
+      $layout = $request->get('layout', null);
+      $entityLayout = null;
+      
       $em = $this->getDoctrine()->getManager();
 
       $entity = $em->getRepository('MaithNewsletterBundle:Content')->find($id);
+      if($layout)
+      {
+        $entityLayout = $em->getRepository('MaithNewsletterBundle:EmailLayout')->find($layout);
+      }
+      
 
       if (!$entity) {
           throw $this->createNotFoundException('Unable to find Content entity.');
       }
-      
-      return $this->render('MaithNewsletterBundle:Default:baseNewsletter.html.twig', array(
+      if($layout && !$entityLayout){
+        throw $this->createNotFoundException('Unable to find Email layout entity.');
+      }
+      $newBody= '';
+      if($layout)
+      {
+        $dbBody = $this->retrieveEmailLayoutBody($layout, $em);
+        $newBody = str_replace('[[body]]', $entity->getBody(), $dbBody);
+        
+      }
+      else
+      {
+        $newBody = $this->renderView('MaithNewsletterBundle:Default:baseNewsletterBody.html.twig', array(
             'entity' => $entity,
             ));
+      }
+      return $this->render('MaithNewsletterBundle:Default:baseNewsletterHeader.html.twig', array(
+          'bodycontent' => $newBody,
+          ));
+
     }
     
+    /**
+     * 
+     * @param type $id
+     * @return type
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
     public function previewSendContentAction($id)
     {
       $em = $this->getDoctrine()->getManager();
@@ -393,7 +552,12 @@ class DefaultController extends Controller
             ));
     }
     
-    
+    /**
+     * 
+     * @param type $id
+     * @return StreamedResponse
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
     public function downloadSendedUsersAction($id)
     {
         $response = new StreamedResponse();
@@ -403,16 +567,16 @@ class DefaultController extends Controller
             $handle = fopen('php://output', 'w+');
      
             // Add a row with the names of the columns for the CSV file
-            fputcsv($handle, array('Email', 'Active'),';');
+            fputcsv($handle, array('Email', 'Hits'),';');
             // Query data from database
             
-            $usersSql = "select email, active from maith_newsletter_user where id in (select maith_newsletter_user_id from maith_newsletter_content_send_user where maith_newsletter_content_send_id = ? )"; 
+            $usersSql = "select u.email, su.hits from maith_newsletter_user u left join maith_newsletter_content_send_user su on su.maith_newsletter_user_id = u.id where su.maith_newsletter_content_send_id = ? "; 
             $results = $em->getConnection()->executeQuery( $usersSql, array($id), array(\PDO::PARAM_INT) );
             // Add the data queried from database
             while( $row = $results->fetch() )
             {
                 fputcsv($handle,array($row['email'],
-                    $row['active']                    
+                    $row['hits']                    
                 ),';');
             }
      
@@ -426,6 +590,14 @@ class DefaultController extends Controller
         return $response;
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
     public function sendContentQueueAction(Request $request, $id)
     {
       $em = $this->getDoctrine()->getManager();
@@ -437,10 +609,13 @@ class DefaultController extends Controller
       $entity = new ContentSend();
       $entity->setContent($content);
       $entity->setTitle($content->getTitle());
-      $body = $this->renderView('MaithNewsletterBundle:Default:baseNewsletter.html.twig', array(
+      $body = $this->renderView('MaithNewsletterBundle:Default:baseNewsletterBody.html.twig', array(
             'entity' => $content,
             ));
-      $entity->setBody($body);
+      $fullBody = $this->renderView('MaithNewsletterBundle:Default:baseNewsletterHeader.html.twig', array(
+            'bodycontent' => $body,
+            ));
+      $entity->setBody($fullBody);
       
       $form = $this->createForm(new ContentSendType(), $entity, array(
           'method' => 'POST',
@@ -453,6 +628,20 @@ class DefaultController extends Controller
       );
       
       $form->handleRequest($request);
+      $emailLayout = $entity->getEmailLayout();
+      if($emailLayout)
+      {
+        $sql = "select id, body from maith_newsletter_email_layout where id = :id";
+        $stmt = $em->getConnection()->prepare( $sql );
+        $stmt->execute(array('id' => $emailLayout->getId()));
+        $row = $stmt->fetch();
+        $newBody = str_replace('[[body]]', $content->getBody(), $row['body']);
+        $fullBody = $this->renderView('MaithNewsletterBundle:Default:baseNewsletterHeader.html.twig', array(
+            'bodycontent' => $newBody,
+            ));
+        $entity->setBody($fullBody);
+      }
+      
       if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -460,27 +649,50 @@ class DefaultController extends Controller
             
             $sendToType = $form->get('sendToType')->getData();
             $sendList = $form->get('sendlist')->getData();
+            $sendlistIds = $form->get('sendlistIds')->getData();
           switch ($sendToType) {
             case 2:
+              $explodedList = explode(",", $sendList);
               $sql = 'INSERT INTO maith_newsletter_content_send_user (maith_newsletter_content_send_id, maith_newsletter_user_id , active) select :contentId, id, 1 from maith_newsletter_user where active = 1 and id in (select user_id from maith_newsletter_users_groups where usergroup_id = :groupId )';
               $stmt = $em->getConnection()->prepare( $sql );
-              $stmt->bindValue('contentId', $entity->getId());
-              $stmt->bindValue('groupId', $sendList);
-              $stmt->execute();
+              foreach($explodedList as $groupId)
+              {
+                if($groupId !== "")
+                {
+                  $stmt->bindValue('contentId', $entity->getId());
+                  $stmt->bindValue('groupId', $groupId);
+                  $stmt->execute();    
+                }
+                    
+              }
+              
               break;
             case 3:
               $explodedList = explode(",", $sendList);
-              $sql = 'INSERT INTO maith_newsletter_content_send_user (maith_newsletter_content_send_id, maith_newsletter_user_id , active) select :contentId, id, 1 from maith_newsletter_user where active = 1 and email = :email';
-              $stmt = $em->getConnection()->prepare( $sql );
-              
+              $sqlSelectIds = 'select id from maith_newsletter_user where active = 1 and email = :email';
+              $emailsIds = array();
               foreach($explodedList as $email){
                 $trimmedEmail = trim($email);
                 if(!empty($trimmedEmail))
                 {
-                  $stmt->bindValue('contentId', $entity->getId());
-                  $stmt->bindValue('email', $trimmedEmail);
-                  $stmt->execute();
+                  $resultsEmail = $em->getConnection()->executeQuery( $sqlSelectIds, array('email' => $trimmedEmail) );
+                  $row = $resultsEmail->fetch();
+                  if(isset($row['id']))
+                  {
+                    $emailsIds[$row['id']] = $row['id'];
+                  }
                 }
+              }
+              $explodedListIds = explode(',', $sendlistIds);
+              foreach($explodedListIds as $id){
+                $emailsIds[$id] = $id;
+              }
+              $sqlIds = 'INSERT INTO maith_newsletter_content_send_user (maith_newsletter_content_send_id, maith_newsletter_user_id , active) select :contentId, id, 1 from maith_newsletter_user where active = 1 and id = :id';
+              $stmtIds = $em->getConnection()->prepare( $sqlIds );
+              foreach($emailsIds as $userId){
+                $stmtIds->bindValue('contentId', $entity->getId());
+                $stmtIds->bindValue('id', $userId);
+                $stmtIds->execute();
               }
               break;
             default:
@@ -504,7 +716,11 @@ class DefaultController extends Controller
       return $returnJson;
     }
     
-    
+    /**
+     * 
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
     public function retrieveGroupsAction(){
       $em = $this->getDoctrine()->getManager();
       $groups = $em->getRepository('MaithNewsletterBundle:UserGroup')->findAll();
@@ -521,12 +737,65 @@ class DefaultController extends Controller
       return $returnJson;
     }
     
+    /**
+     * 
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
     public function retrieveUserFormAction()
     {
+      $showGroups = true;
+      $groupUsersLimit = 50;
+      $groupData = array();
+      if($showGroups)
+      {
+          $em = $this->getDoctrine()->getManager();
+          $groupsSql = 'select g.id, g.name from maith_newsletter_group g order by g.name asc';
+          $resultGroups = $em->getConnection()->executeQuery( $groupsSql);
+          $usersSql = 'select u.id, u.email from maith_newsletter_user u left join maith_newsletter_users_groups ug on ug.user_id = u.id where u.active = 1 and ug.usergroup_id = :groupId limit '.$groupUsersLimit;
+          while( $groupRow = $resultGroups->fetch() )
+          {
+              $groupData[$groupRow['name']] = array();
+              $resultUsers = $em->getConnection()->executeQuery( $usersSql, array('groupId' => $groupRow['id']));
+              while( $userRow = $resultUsers->fetch() )
+              {
+                  $groupData[$groupRow['name']][] = array('identifier' => $userRow['id'], 'label' => $userRow['email']);//[$userRow['id']] = $userRow['email'];
+              }
+          }
+          
+      }
+      $rowClass = '';
+      $perRow = 0;
+      switch (count($groupData)) {
+          case 0:
+              $rowClass = '';
+              break;
+          case 1:
+              $rowClass = 'col-lg-12';
+              $perRow = 1;
+              break;
+          case 2:
+              $rowClass = 'col-lg-6';
+              $perRow = 2;
+              break;
+          case 3:
+              $rowClass = 'col-lg-4';
+              $perRow = 3;
+              break;
+          default:
+              $rowClass = 'col-lg-3';
+              $perRow = 4;
+              break;
+      }
+      
+      
       $responseData = array(
           'result' => true,
           'message' => 'Error en el formulario',
           'html' => $this->renderView('MaithNewsletterBundle:Default:usersSelector.html.twig', array(
+              'groupData' => $groupData,
+              'rowClass' => $rowClass,
+              'perRow' => $perRow,
             )),
       );
       
@@ -535,11 +804,17 @@ class DefaultController extends Controller
       return $returnJson;
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_GROUP")
+     */
     public function retrieveUsersAction(Request $request)
     {
-      $term = $request->get('term').'%';
+      $term = '%'.$request->get('term').'%';
       $em = $this->getDoctrine()->getManager();
-      $usersSearchSql = "select id, email, active from maith_newsletter_user where email LIKE ?"; 
+      $usersSearchSql = "select id, email, active from maith_newsletter_user where email LIKE ? and active = 1 limit 20"; 
       $results = $em->getConnection()->executeQuery( $usersSearchSql, array($term), array(\PDO::PARAM_STR) );
       // Add the data queried from database
       $returnData = array();
@@ -552,6 +827,47 @@ class DefaultController extends Controller
       return $returnJson;
     }
     
+    /**
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_SEARCH_USER")
+     */
+    public function searchListUsersAction(Request $request)
+    {
+      $limit = 50;
+      $search = $request->get('search');
+      $term = '%'.$search.'%';
+      $em = $this->getDoctrine()->getManager();
+      $usersSearchSql = "select id, email, active from maith_newsletter_user where email LIKE ? order by email limit ".$limit; 
+      $results = $em->getConnection()->executeQuery( $usersSearchSql, array($term), array(\PDO::PARAM_STR) );
+      // Add the data queried from database
+      $list = array();
+      while( $row = $results->fetch() )
+      {
+          $list[] = array('id' => $row['id'], 'email' => $row['email'], 'active' => $row['active']);
+      }
+      $html = $this->renderView('MaithNewsletterBundle:Default:showUsersList.html.twig', array(
+                    'list' => $list,
+                    'search' => $search,
+                    'limit' => $limit,
+                    'limitReached' => $limit == count($list),
+                ));
+      $returnJson = new JsonResponse();
+      $returnJson->setData(array(
+          'result' => true,
+          'html' => $html,
+      ));
+      return $returnJson;
+    }
+    
+    /**
+     * 
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_CONTENT")
+     */
     public function removeSendedContentAction($id)
     {
       $em = $this->getDoctrine()->getManager();
@@ -581,4 +897,443 @@ class DefaultController extends Controller
       ));
       return $returnJson;
     }
+    
+    /**
+     * 
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_CREATE_EMAIL_LAYOUT")
+     */
+    public function createEmailLayoutAction()
+    {
+      $content = new ContentSend();
+      $content->setBody('[[body]]');
+      $content->setTitle('[[title]]');
+      $body = $this->renderView('MaithNewsletterBundle:Default:baseNewsletterBody.html.twig', array(
+            'entity' => $content,
+            ));
+      
+      $default = new EmailLayout();
+      $default->setBody($body);
+      $form = $this->createNewEmailLayoutForm($default);
+      $html = $this->renderView('MaithNewsletterBundle:Default:emailLayoutForm.html.twig', array(
+              'form' => $form->createView(),
+            ));
+      $returnJson = new JsonResponse();
+      $returnJson->setData(array(
+          'id' => 1,
+          'html' => $html,
+          'result' => true,
+      ));
+      return $returnJson;
+    }
+    
+    private function retrieveEmailLayoutBody($id, $em)
+    {
+        $sql = "select id, body from maith_newsletter_email_layout where id = :id";
+        $stmt = $em->getConnection()->prepare( $sql );
+        $stmt->execute(array('id' => $id));
+        $row = $stmt->fetch();
+        return $row['body'];
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_EMAIL_LAYOUT")
+     */
+    public function editEmailLayoutAction(Request $request, $id)
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $entity = $em->getRepository('MaithNewsletterBundle:EmailLayout')->find($id);
+      if (!$entity) {
+          throw $this->createNotFoundException('Unable to find Email Layout entity.');
+      }
+      
+      $default = new EmailLayout();
+      $default->setBody($this->retrieveEmailLayoutBody($id, $em));
+      $default->setName($entity->getName());
+      $form = $this->createNewEmailLayoutForm($default);
+      $html = $this->renderView('MaithNewsletterBundle:Default:emailLayoutUpdateForm.html.twig', array(
+              'form' => $form->createView(),
+              'entity' => $entity,
+            ));
+      $returnJson = new JsonResponse();
+      $returnJson->setData(array(
+          'id' => 1,
+          'html' => $html,
+          'result' => true,
+      ));
+      return $returnJson;
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_CREATE_EMAIL_LAYOUT")
+     */
+    public function saveEmailLayoutAction(Request $request)
+    {
+      $entity = new EmailLayout();
+      $form = $this->createNewEmailLayoutForm($entity);
+
+      $form->handleRequest($request);
+
+      $responseData = array(
+          'result' => false,
+          'message' => 'Error en el formulario',
+          'html' => '',
+      );
+       if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+            $responseData['message'] = 'Guardado con exito';
+            $responseData['listHtml'] = $this->renderView('MaithNewsletterBundle:Default:_emailLayoutRow.html.twig', array(
+                'emailLayout' => $entity
+            ));
+            $responseData['result'] = true;
+            $responseData['isupdate'] = false;
+            $responseData['id'] = '';
+        }else{
+            $responseData['html'] = $this->renderView('MaithNewsletterBundle:Default:emailLayoutForm.html.twig', array(
+              'form' => $form->createView(),
+            ));
+        }
+        
+      $returnJson = new JsonResponse();
+      $returnJson->setData($responseData);
+      return $returnJson;
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_EMAIL_LAYOUT")
+     */
+    public function updateEmailLayoutAction(Request $request, $id)
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $entity = $em->getRepository('MaithNewsletterBundle:EmailLayout')->find($id);
+      if (!$entity) {
+          throw $this->createNotFoundException('Unable to find Email Layout entity.');
+      }
+      
+      $form = $this->createNewEmailLayoutForm($entity);
+
+      $form->handleRequest($request);
+
+      $responseData = array(
+          'result' => false,
+          'message' => 'Error en el formulario',
+          'html' => '',
+      );
+       if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+            $responseData['message'] = 'Guardado con exito';
+            $responseData['listHtml'] = $this->renderView('MaithNewsletterBundle:Default:_emailLayoutRow.html.twig', array(
+                'emailLayout' => $entity
+            ));
+            $responseData['result'] = true;
+            $responseData['isupdate'] = true;
+            $responseData['id'] = $id;
+        }else{
+            $responseData['html'] = $this->renderView('MaithNewsletterBundle:Default:emailLayoutForm.html.twig', array(
+              'form' => $form->createView(),
+            ));
+        }
+        
+      $returnJson = new JsonResponse();
+      $returnJson->setData($responseData);
+      return $returnJson;
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_GROUP")
+     */
+    public function editGroupAction(Request $request, $id)
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $entity = $em->getRepository('MaithNewsletterBundle:UserGroup')->find($id);
+      if (!$entity) {
+          throw $this->createNotFoundException('Unable to find Group entity.');
+      }
+      $editForm = $this->createNewNewsletterGroupForm($entity);
+      
+      
+      $html = $this->renderView('MaithNewsletterBundle:Default:editGroup.html.twig', array(
+              'form' => $editForm->createView(),
+              'entity' => $entity,
+            ));
+      $returnJson = new JsonResponse();
+      $returnJson->setData(array(
+          'html' => $html,
+          'result' => true,
+      ));
+      return $returnJson;
+    }
+
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_GROUP")
+     */
+    public function updateGroupAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('MaithNewsletterBundle:UserGroup')->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Group entity.');
+        }
+        $form = $this->createNewNewsletterGroupForm($entity);
+        $form->handleRequest($request);
+
+        $responseData = array(
+            'result' => false,
+            'message' => 'Error en el formulario',
+            'html' => '',
+            'id' => $id,
+        );
+        $html ='';
+        $result = false;
+        if ($form->isValid()) {
+            try{
+                $em->persist($entity);
+                $em->flush();
+                $responseData['message'] = 'Datos guardados con exito';
+                $result = true;
+                $html = $this->renderView('MaithNewsletterBundle:Default:_groupRow.html.twig', array(
+                    'group' => $entity
+                ));
+            }catch(\Exception $e)
+            {
+                $responseData['message'] = 'El grupo ya existe.';
+            }
+            
+        }
+        if(!$result)
+        {
+            $html = $this->renderView('MaithNewsletterBundle:Default:editGroup.html.twig', array(
+              'form' => $form->createView(),
+              'entity' => $entity,
+            ));
+        }
+        $responseData['html'] = $html;
+        $responseData['result'] = $result;
+        $returnJson = new JsonResponse();
+        $returnJson->setData($responseData);
+        return $returnJson;
+    }    
+    
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_REMOVE_GROUP")
+     */
+    public function removeGroupAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('MaithNewsletterBundle:UserGroup')->find($id);
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Group entity.');
+        }
+        $em->remove($entity);
+        $em->flush();
+        $returnJson = new JsonResponse();
+        $returnJson->setData(array(
+            'result' => true,
+            'message' => 'Grupo eliminado correctamente',
+            'html' => '',
+            'id' => $id,
+        ));
+        return $returnJson;
+    }    
+    
+    /**
+     * 
+     * @param Request $request
+     * @param type $userId
+     * @param type $groupId
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_GROUP")
+     */
+    public function removeUserOfGroupAction(Request $request, $userId, $groupId)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $group = $em->getRepository('MaithNewsletterBundle:UserGroup')->find($groupId);
+        $user = $em->getRepository('MaithNewsletterBundle:User')->find($userId);
+        if (!$group) {
+            throw $this->createNotFoundException('Unable to find Group entity.');
+        }
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find Group entity.');
+        }
+        $user->removeUserGroup($group);
+        $group->removeUser($user);
+        $em->persist($user);
+        $em->persist($group);
+        $em->flush();
+        $returnJson = new JsonResponse();
+        $returnJson->setData(array(
+            'result' => true,
+            'message' => 'Usuario del grupo eliminado correctamente',
+            'html' => '',
+            'userId' => $userId,
+            'groupId' => $groupId,
+        ));
+        return $returnJson;
+    }    
+    
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_GROUP")
+     */
+    public function addUserOfGroupAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $group = $em->getRepository('MaithNewsletterBundle:UserGroup')->find($id);
+        if (!$group) {
+            throw $this->createNotFoundException('Unable to find Group entity.');
+        }
+        $userEmailsList = $request->get('users-selector', '');
+        $explodedList = explode(",", $userEmailsList);
+        $html = '';
+        $message = 'Usuario(s) agregado(s) correctamente.';
+        foreach($explodedList as $email)
+        {
+          $trimmedEmail = trim($email);
+          if(!empty($trimmedEmail))
+          {
+            $user = $em->getRepository('MaithNewsletterBundle:User')->findOneBy(
+                array('email' => $trimmedEmail)
+            );
+            if($user)
+            {
+              try{
+                $user->addUserGroup($group);
+                $group->addUser($user);
+                $em->persist($user);
+                $em->persist($group);
+                $em->flush();
+                $html .= $this->renderView('MaithNewsletterBundle:Default:_userGroupRow.html.twig', array(
+                      'group' => $group,
+                      'user' => $user,
+                  ));
+              } catch (\Exception $ex) {
+                $message = 'Se a intentado ingresar un usuario ya existente. Operación cancelada';
+              }
+              
+            }
+          }
+        }
+        $returnJson = new JsonResponse();
+        $returnJson->setData(array(
+            'result' => true,
+            'message' => $message,
+            'html' => $html,
+            
+        ));
+        return $returnJson;
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_USER")
+     */
+    public function userDisableAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('MaithNewsletterBundle:User')->find($id);
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+        $user->setActive(false);
+        $em->persist($user);
+        $em->flush();
+        $data = array(
+          'id' => $user->getId(),  
+          'email' => $user->getEmail(),  
+          'active' => $user->getActive(),  
+        );
+        $html = $this->renderView('MaithNewsletterBundle:Default:_userListRow.html.twig', array(
+                      'user' => $data,
+                  ));
+        $returnJson = new JsonResponse();
+        $returnJson->setData(array(
+            'result' => true,
+            'message' => 'Usuario desactivado',
+            'html' => $html,
+            'id' => $id,
+            
+        ));
+        return $returnJson;
+    }    
+    /**
+     * 
+     * @param Request $request
+     * @param type $id
+     * @return JsonResponse
+     * @throws type
+     * @Secure(roles="ROLE_NEWSLETTER_EDIT_USER")
+     */
+    public function userEnableAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('MaithNewsletterBundle:User')->find($id);
+        if (!$user) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+        $user->setActive(true);
+        $em->persist($user);
+        $em->flush();
+        $data = array(
+          'id' => $user->getId(),  
+          'email' => $user->getEmail(),  
+          'active' => $user->getActive(),  
+        );
+        $html = $this->renderView('MaithNewsletterBundle:Default:_userListRow.html.twig', array(
+                      'user' => $data,
+                  ));
+        $returnJson = new JsonResponse();
+        $returnJson->setData(array(
+            'result' => true,
+            'message' => 'Usuario activado',
+            'html' => $html,
+            'id' => $id,
+            
+        ));
+        return $returnJson;
+    }    
 }

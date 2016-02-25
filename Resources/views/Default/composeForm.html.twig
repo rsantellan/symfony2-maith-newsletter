@@ -1,13 +1,14 @@
+<button type="button" class="btn btn-info pull-right" onclick="$('#newsletter-global-container').fadeIn('slow');$('#newsletter-compose-container').html('');" >{% trans %}admin_newsletter_content_show_list{% endtrans %}</button>
 <form action="{{ path('admin_newsletter_save_content')}}" method='POST' onsubmit='return saveData(this);'>
     <div class='pd-n mg-t-lg'>
         <div class="form-group">
           {{ form_errors(form.title) }}
-          <label for="{{ form.title.vars.id }}">Titulo:</label>
+          <label for="{{ form.title.vars.id }}">{% trans %}admin_newsletter_content_title{% endtrans %}:</label>
           {{ form_widget(form.title, {'attr' : {'class' : 'form-control'}}) }}
         </div>
         <div class="form-group">
           {{ form_errors(form.body) }}
-          <label for="{{ form.body.vars.id }}">Contenido:</label>
+          <label for="{{ form.body.vars.id }}">{% trans %}admin_newsletter_content_content{% endtrans %}:</label>
           {{ form_widget(form.body, {'attr' : {'class' : 'form-control mceEditor'}}) }}
         </div>
     {{ form_widget(form) }}

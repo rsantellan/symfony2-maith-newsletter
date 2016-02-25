@@ -1,8 +1,45 @@
 <div>
   <form action="javascript:void(0)" method='POST' onsubmit='return false;'>
     <div class="form-group">
-        <label for="users-selector">Elegir el grupo:</label>
+        <label for="users-selector">{% trans %}admin_newsletter_compose_choose_user{% endtrans %}</label>
         <textarea type="text" class="form-control" id="users-selector" name="users-selector" ></textarea> 
     </div>
   </form>
+    
+  {% if groupData | length > 0 %}
+      <div id="group-users-container">
+      {% for group, emails in groupData %}
+          {% if loop.first %}
+              <div class="row">
+          {% else %}
+              {% if loop.index0 is divisible by(perRow) %}
+                  </div>
+                  <div class="row">
+              {% endif %}
+          {% endif %}
+          <div class="{{ rowClass}}">
+            <div class="panel panel-color">
+                <div class="panel-heading">
+                    {{ group }}
+                    <small class="pull-right text-white">
+                        <a href="javascript:;" class="fa panel-collapsible pd-r-xs fa-chevron-down"></a>
+                    </small>
+                </div>
+                <div class="panel-body" style="max-height: 400px; overflow-y: auto; display:none;">
+                    {% for emailUser in emails %}
+                        <div class="checkbox">
+                            <label>
+                              {% if emailUser.identifier != '' %}<input type="checkbox" name="groupUser[]" value="{{ emailUser.identifier }}" />{% endif %}{{ emailUser.label }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+          </div>
+          {% if loop.last %}
+              </div>
+          {% endif %}
+      {% endfor %}
+      </div>
+  {% endif %}
 </div>

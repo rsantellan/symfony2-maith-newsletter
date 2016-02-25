@@ -36,18 +36,6 @@ class UserGroup
     private $users;    
    
     /**
-     * Set id
-     *
-     * @param integer $id
-     * @return UserGroup
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-    
-    /**
      * Get id
      *
      * @return integer 

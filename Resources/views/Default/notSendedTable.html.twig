@@ -8,9 +8,9 @@
         <th>{% trans %}admin_newsletter_content_sended_actions{% endtrans %}</th>
       </tr>
     </thead>
-    <tbody id="table_body_sended_rows">
+    <tbody id="table_body_not_sended_rows">
       {% for sended in entity.contentSend %}
-          {% if sended.sended %}
+          {% if not sended.sended %}
             {% include 'MaithNewsletterBundle:Default:sendedRow.html.twig' with { 'sended' : sended } %}
           {% endif %}
       {% endfor %}

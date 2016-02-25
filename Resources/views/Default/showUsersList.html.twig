@@ -1,0 +1,29 @@
+<button type="button" class="btn btn-info pull-right" onclick="$('#newsletter-global-container').fadeIn('slow');$('#newsletter-compose-container').html('');" >{% trans %}admin_newsletter_content_show_list{% endtrans %}</button>
+<div class="row">
+    <div class="col-md-12">
+        <h3>{% trans %}admin_newsletter_user_search_word{% endtrans %} {{ search }} {% trans %}admin_newsletter_user_search_quantity{% endtrans %} {{ list | length }} </h3>
+        {% if limitReached %}
+            <h4>{% trans %}admin_newsletter_user_search_limit_reached{% endtrans %}</h4>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive no-border">
+            <table class="table table-bordered table-striped mg-t datatable">
+                <thead>
+                  <tr>
+                    <th>{% trans %}admin_newsletter_user_email{% endtrans %}</th>
+                    <th>{% trans %}admin_newsletter_user_active{% endtrans %}</th>
+                    <th>{% trans %}admin_newsletter_user_actions{% endtrans %}</th>
+                  </tr>
+                </thead>
+                <tbody id="table_body_sended_rows">
+                    {% for user in list %}
+                        {% include 'MaithNewsletterBundle:Default:_userListRow.html.twig' with { 'user' : user } %}   
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>      

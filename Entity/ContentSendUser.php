@@ -21,7 +21,7 @@ class ContentSendUser
 
 	/**
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="contentUser")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="userSendContent")
      * @ORM\JoinColumn(name="maith_newsletter_user_id", referencedColumnName="id", onDelete="CASCADE")
      */	
 	private $user;
@@ -33,13 +33,13 @@ class ContentSendUser
      */
     private $active;
     
-
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="sendat", type="datetime", nullable=true)
+     * @var Integer
+     * 
+     * @ORM\Column(name="hits", type="integer", options={"default" = 0})
      */
-    private $sendat;
+    private $hits;
+    
 
     /**
      * Set active
@@ -67,10 +67,10 @@ class ContentSendUser
     /**
      * Set content
      *
-     * @param \Maith\NewsletterBundle\Entity\ContentSend $content
+     * @param \Maith\NewsletterBundle\Entity\Content $content
      * @return ContentUser
      */
-    public function setContent(\Maith\NewsletterBundle\Entity\ContentSend $content)
+    public function setContent(\Maith\NewsletterBundle\Entity\Content $content)
     {
         $this->content = $content;
 
@@ -80,7 +80,7 @@ class ContentSendUser
     /**
      * Get content
      *
-     * @return \Maith\NewsletterBundle\Entity\ContentSend 
+     * @return \Maith\NewsletterBundle\Entity\Content 
      */
     public function getContent()
     {
@@ -109,27 +109,27 @@ class ContentSendUser
     {
         return $this->user;
     }
-    
+
     /**
-     * Set sendat
+     * Set hits
      *
-     * @param \DateTime $sendat
-     * @return ContentSend
+     * @param integer $hits
+     * @return ContentSendUser
      */
-    public function setSendat($sendat)
+    public function setHits($hits)
     {
-        $this->sendat = $sendat;
+        $this->hits = $hits;
 
         return $this;
     }
 
     /**
-     * Get sendat
+     * Get hits
      *
-     * @return \DateTime 
+     * @return integer 
      */
-    public function getSendat()
+    public function getHits()
     {
-        return $this->sendat;
+        return $this->hits;
     }
 }

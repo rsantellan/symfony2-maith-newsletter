@@ -1,4 +1,3 @@
-<h3>{% trans %}admin_newsletter_user_create_title{% endtrans %}</h3>
 <form action="{{ path('admin_newsletter_save_user') }}" method="post" role="form" onsubmit="return addSimpleUser(this)">
   <div class="form-group">
       {{ form_errors(userform.email) }}

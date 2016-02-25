@@ -1,0 +1,49 @@
+<button type="button" class="btn btn-info pull-right" onclick="$('#newsletter-global-container').fadeIn('slow');$('#newsletter-compose-container').html('');" >{% trans %}admin_newsletter_content_show_list{% endtrans %}</button>
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-color">
+            <div class="panel-heading">{% trans %}admin_newsletter_user_group_update_title{% endtrans %}</div>
+            <div class="panel-body">    
+                <form action="{{ path('admin_newsletter_update_user_group', {'id' : entity.id}) }}" method="post" role="form" onsubmit="return saveEditGroup(this)">
+                  <div class="form-group">
+                      {{ form_errors(form.name) }}
+                      <label for="{{ form.name.vars.id }}">{% trans %}admin_newsletter_user_group_name{% endtrans %}</label>
+                      {{ form_widget(form.name, {'attr' : {'class' : 'form-control'}}) }}
+                  </div>
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-default">{% trans %}admin_newsletter_user_group_save{% endtrans %}</button>
+                  </div>	
+                      {{ form_rest(form) }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-color">
+            <div class="panel-heading">{% trans %}admin_newsletter_user_group_update_title{% endtrans %}</div>
+            <div class="panel-body">    
+                <form action="{{ path('admin_newsletter_add_user_to_group', {'id' : entity.id}) }}" method="post" role="form" onsubmit="return addUserToGroup(this)">
+                    <div class="form-group">
+                      <label for="users-selector">{% trans %}admin_newsletter_user_group_choose_user{% endtrans %}</label>
+                      <textarea type="text" class="form-control" id="users-selector" name="users-selector" ></textarea> 
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-default">{% trans %}admin_newsletter_email_layout_save{% endtrans %}</button>
+                    </div>	
+                  </form>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3" id="first_user_group_container">
+  {% for user in entity.users %}
+      {% if loop.index is divisible by (10) %}
+        </div>
+        <div class="col-md-3">
+      {% endif %}
+      {% include 'MaithNewsletterBundle:Default:_userGroupRow.html.twig' with { 'user' : user, 'group' : entity } %}
+  {% endfor %}
+    </div>
+</div>

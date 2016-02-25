@@ -1,3 +1,4 @@
+<button type="button" class="btn btn-info pull-right" onclick="$('#newsletter-global-container').fadeIn('slow');$('#newsletter-compose-container').html('');" >{% trans %}admin_newsletter_content_show_list{% endtrans %}</button>
 <h2>{{ entity.title }}</h2>
 <a href='javascript:void(0)' onclick='$("#div-edit-container-{{ entity.id }}").toggle()' class='btn btn-info'>{% trans %}admin_newsletter_content_edit{% endtrans %}</a>
 <div id='div-edit-container-{{ entity.id }}' style='display:none'>
@@ -5,7 +6,7 @@
       <div class='pd-n mg-t-lg'>
           <div class="form-group">
             {{ form_errors(form.body) }}
-            <label for="{{ form.body.vars.id }}">Contenido:</label>
+            <label for="{{ form.body.vars.id }}">{% trans %}admin_newsletter_content_content{% endtrans %}:</label>
             {{ form_widget(form.body, {'attr' : {'class' : 'form-control mceEditor'}}) }}
           </div>
       {{ form_widget(form) }}
@@ -20,9 +21,31 @@
   </form>
 </div>
 
-
-<a href='{{ path('admin_newsletter_preview_content', {'id' : entity.id}) }}' target="_blank" class='btn btn-info'>{% trans %}admin_newsletter_content_preview{% endtrans %}</a>
-
+<div class="row">
+  <div class="col-md-4">  
+    
+    <div class="form-group">
+        <select name="layouts" id="emaillayouts" class="form-control"> 
+          <option value="">{% trans %}admin_newsletter_email_layout_default{% endtrans %}</option>
+          {% for layout in emailLayouts %}
+            <option value="{{ layout.id }}">{{ layout.name }}</option>
+          {% endfor %}
+        </select>        
+    </div>    
+    <a basehref='{{ path('admin_newsletter_preview_content', {'id' : entity.id}) }}' href="javascript:void(0)" target="_blank" class='btn btn-success pull-right' onclick="return addToUrlLayout(this)">{% trans %}admin_newsletter_content_preview{% endtrans %}</a>    
+  </div>
+</div>
+<div style="clear:both !important;"></div>
+<div class="pd-t-lg">
+  <h4 class="pd-t-lg">{% trans %}admin_newsletter_content_not_sended_list{% endtrans %}</h4>
+  <div id='sended_table_container'>
+    {% include 'MaithNewsletterBundle:Default:notSendedTable.html.twig' with { 'entity' : entity } %}
+  </div>
+  <h4 class="pd-t-lg">{% trans %}admin_newsletter_content_sended_list{% endtrans %}</h4><a href="javascript:void(0)" onclick="$('#sended_table_container').toggle()"><i class="fa fa-eye"></i></a>
+  <div id='sended_table_container' style="display:none">
+    {% include 'MaithNewsletterBundle:Default:sendedTable.html.twig' with { 'entity' : entity } %}
+  </div>
+</div>
 <div style="clear:both !important;"></div>
 
 <div class="col-md-4">
@@ -30,7 +53,7 @@
       <div class='pd-n mg-t-lg'>
           <div class="form-group">
 			  {{ form_errors(formSend.sendat) }}
-              <label for="{{ formSend.sendat.vars.id }}">Enviar el</label>
+              <label for="{{ formSend.sendat.vars.id }}">{% trans %}admin_newsletter_content_send_date{% endtrans %}</label>
               <div class="">
                 <div class="input-group mg-b-md input-append date datepicker" data-date="{{ formSend.sendat.vars.value | date('d-m-Y') }}" data-date-format="dd-mm-yyyy">
                     {{ form_widget(formSend.sendat, {'attr' : {'class' : 'form-control'}}) }}
@@ -44,8 +67,13 @@
           </div>
           <div class="form-group">
             {{ form_errors(formSend.sendToType) }}
-            <label for="{{ formSend.sendToType.vars.id }}">Enviar a:</label>
+            <label for="{{ formSend.sendToType.vars.id }}">{% trans %}admin_newsletter_content_send_to{% endtrans %}:</label>
             {{ form_widget(formSend.sendToType, {'attr' : {'class' : 'form-control mceEditor', 'onchange' : 'showChangesTypes(this)'}}) }}
+          </div>
+          <div class="form-group">
+            {{ form_errors(formSend.emailLayout) }}
+            <label for="{{ formSend.emailLayout.vars.id }}">{% trans %}admin_newsletter_content_send_layout{% endtrans %}:</label>
+            {{ form_widget(formSend.emailLayout, {'attr' : {'class' : 'form-control'}}) }}
           </div>
       {{ form_rest(formSend) }}
       </div>
@@ -56,11 +84,4 @@
 </div>
 <div class="col-md-8" id="selector-container">
   
-</div>
-<div style="clear:both !important;"></div>
-<div class="pd-t-lg">
-  <h4 class="pd-t-lg">{% trans %}admin_newsletter_content_sended_list{% endtrans %}</h4>
-  <div id='sended_table_container'>
-    {% include 'MaithNewsletterBundle:Default:sendedTable.html.twig' with { 'entity' : entity } %}
-  </div>
 </div>
