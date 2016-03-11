@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Wa72\HtmlPageDom\HtmlPage;
 
 /**
  * Description of SendCommand
@@ -91,35 +90,9 @@ class SendCommand extends ContainerAwareCommand{
           $counter = 0;
           foreach($users as $user)
           {
-            $htmlPage = '';
-            if($trackLinks)
-            {
-              $page = new HtmlPage($row['body']);
-              $links = $page->getCrawler()->filter('a');
-              foreach($links as $link)
-              {
-                $link = new \Wa72\HtmlPageDom\HtmlPageCrawler($link);
-                $string = $link->attr('href');
-                if(substr_count($string, 'javascript') == 0 && substr_count($string, 'mailto') == 0)
-                {
-                  if(substr_count($string, '?'))
-                  {
-                    $string .= "&";
-                  }
-                  else
-                  {
-                    $string .= "?";
-                  }
-                  $string .= "nwref=".urlencode($user->getUser()->getEmail())."&nwid=".$row['id'];
-                }
-                $link->attr('href', $string);
-              }
-              $htmlPage = $page->save();
-            }
-            else 
-            {
-              $htmlPage = $row['body'];
-            }
+            $bodyHandler = $container->get('maith_newsletter_body_handler');
+            $htmlPage = $bodyHandler->changeBody($row['body'], $trackLinks, $user->getUser()->getEmail(), $row['id']);
+            
             try
             {
               $message = \Swift_Message::newInstance()

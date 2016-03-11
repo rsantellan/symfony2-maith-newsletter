@@ -1,5 +1,5 @@
 parameters:
-#    maith_newsletter.example.class: Maith\NewsletterBundle\Example
+    maith_newsletter_body_handler.class: Maith\NewsletterBundle\Service\DoNothingBodyService
 
 services:
 #    maith_newsletter.example:
@@ -10,3 +10,8 @@ services:
         arguments: [@doctrine.orm.entity_manager, @logger]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 400 }
+            
+            
+    maith_newsletter_body_handler:
+        class: %maith_newsletter_body_handler.class%
+        #arguments: [@service_id, "plain_value", %parameter%]        
