@@ -4,6 +4,9 @@ namespace Maith\NewsletterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * User
  *
@@ -23,7 +26,7 @@ class User
 
     /**
      * @var string
-     *
+     * @Assert\Email()
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
@@ -35,27 +38,27 @@ class User
      */
     private $active = true;
 
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="UserGroup", indexBy="name", inversedBy="users")
      * @ORM\JoinTable(name="maith_newsletter_users_groups")
      */
-    protected $user_groups;    
+    protected $user_groups;
 
     /**
      * @ORM\OneToMany(targetEntity="ContentUser", mappedBy="user")
      */
     private $contentUser;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="ContentSendUser", mappedBy="user")
      */
     private $userSendContent;
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -78,7 +81,7 @@ class User
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -101,7 +104,7 @@ class User
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -141,7 +144,7 @@ class User
     /**
      * Get user_groups
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUserGroups()
     {
@@ -174,7 +177,7 @@ class User
     /**
      * Get contentUser
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getContentUser()
     {
@@ -207,7 +210,7 @@ class User
     /**
      * Get userSendContent
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUserSendContent()
     {

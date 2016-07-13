@@ -1,17 +1,21 @@
 parameters:
     maith_newsletter_body_handler.class: Maith\NewsletterBundle\Service\DoNothingBodyService
+    maith_newsletter_handler.class: Maith\NewsletterBundle\Service\NewsletterHandler
 
 services:
-#    maith_newsletter.example:
-#        class: %maith_newsletter.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+
     maith_new_letter.user_logged:
         class: Maith\NewsletterBundle\Listener\NewsLetterListener
         arguments: [@doctrine.orm.entity_manager, @logger]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 400 }
-            
-            
+
+
     maith_newsletter_body_handler:
         class: %maith_newsletter_body_handler.class%
-        #arguments: [@service_id, "plain_value", %parameter%]        
+        #arguments: [@service_id, "plain_value", %parameter%]
+
+    maith_newsletter:
+        class: %maith_newsletter_handler.class%
+        arguments: ["@doctrine.orm.entity_manager", "@logger"]
+        lazy: true
