@@ -9,43 +9,33 @@
 namespace Maith\NewsletterBundle\Service;
 
 /**
- * Description of TrackLinksBodyService
+ * Description of TrackLinksBodyService.
  *
  * @author rodrigo
  */
-class TrackLinksBodyService implements BodyHandlerInterface{
-  
-  
-  public function changeBody($body, $trackLinks = false, $email = '', $id = '')
-  {
-    if($trackLinks)
+class TrackLinksBodyService implements BodyHandlerInterface
+{
+    public function changeBody($body, $trackLinks = false, $email = '', $id = '')
     {
-      $page = new \Wa72\HtmlPageDom\HtmlPage($body);
-      $links = $page->getCrawler()->filter('a');
-      foreach($links as $link)
-      {
-        $link = new \Wa72\HtmlPageDom\HtmlPageCrawler($link);
-        $string = $link->attr('href');
-        if(substr_count($string, 'javascript') == 0 && substr_count($string, 'mailto') == 0)
-        {
-          if(substr_count($string, '?'))
-          {
-            $string .= "&";
-          }
-          else
-          {
-            $string .= "?";
-          }
-          $string .= "nwref=".urlencode($email)."&nwid=".$id;
+        if ($trackLinks) {
+            $page = new \Wa72\HtmlPageDom\HtmlPage($body);
+            $links = $page->getCrawler()->filter('a');
+            foreach ($links as $link) {
+                $link = new \Wa72\HtmlPageDom\HtmlPageCrawler($link);
+                $string = $link->attr('href');
+                if (substr_count($string, 'javascript') == 0 && substr_count($string, 'mailto') == 0) {
+                    if (substr_count($string, '?')) {
+                        $string .= '&';
+                    } else {
+                        $string .= '?';
+                    }
+                    $string .= 'nwref='.urlencode($email).'&nwid='.$id;
+                }
+                $link->attr('href', $string);
+            }
+            $htmlPage = $page->save();
+        } else {
+            $htmlPage = $body;
         }
-        $link->attr('href', $string);
-      }
-      $htmlPage = $page->save();
     }
-    else 
-    {
-      $htmlPage = $body;
-    }
-  }
-
 }

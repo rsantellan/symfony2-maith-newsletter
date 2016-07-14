@@ -5,46 +5,46 @@ namespace Maith\NewsletterBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ContentUser
+ * ContentUser.
  *
  * @ORM\Table(name="maith_newsletter_content_send_user")
  * @ORM\Entity
  */
 class ContentSendUser
 {
-	/**
+    /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="ContentSend", inversedBy="contentUser")
      * @ORM\JoinColumn(name="maith_newsletter_content_send_id", referencedColumnName="id", onDelete="CASCADE")
      */
-	private $content;
+    private $content;
 
-	/**
+    /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="User", inversedBy="userSendContent")
      * @ORM\JoinColumn(name="maith_newsletter_user_id", referencedColumnName="id", onDelete="CASCADE")
-     */	
-	private $user;
-    
+     */
+    private $user;
+
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
-    
+
     /**
-     * @var Integer
+     * @var int
      * 
      * @ORM\Column(name="hits", type="integer", options={"default" = 0})
      */
     private $hits;
-    
 
     /**
-     * Set active
+     * Set active.
      *
-     * @param boolean $active
+     * @param bool $active
+     *
      * @return ContentUser
      */
     public function setActive($active)
@@ -55,9 +55,9 @@ class ContentSendUser
     }
 
     /**
-     * Get active
+     * Get active.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getActive()
     {
@@ -65,9 +65,10 @@ class ContentSendUser
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param \Maith\NewsletterBundle\Entity\Content $content
+     *
      * @return ContentUser
      */
     public function setContent(\Maith\NewsletterBundle\Entity\Content $content)
@@ -78,9 +79,9 @@ class ContentSendUser
     }
 
     /**
-     * Get content
+     * Get content.
      *
-     * @return \Maith\NewsletterBundle\Entity\Content 
+     * @return \Maith\NewsletterBundle\Entity\Content
      */
     public function getContent()
     {
@@ -88,9 +89,10 @@ class ContentSendUser
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \Maith\NewsletterBundle\Entity\User $user
+     *
      * @return ContentUser
      */
     public function setUser(\Maith\NewsletterBundle\Entity\User $user)
@@ -101,9 +103,9 @@ class ContentSendUser
     }
 
     /**
-     * Get user
+     * Get user.
      *
-     * @return \Maith\NewsletterBundle\Entity\User 
+     * @return \Maith\NewsletterBundle\Entity\User
      */
     public function getUser()
     {
@@ -111,9 +113,10 @@ class ContentSendUser
     }
 
     /**
-     * Set hits
+     * Set hits.
      *
-     * @param integer $hits
+     * @param int $hits
+     *
      * @return ContentSendUser
      */
     public function setHits($hits)
@@ -124,9 +127,9 @@ class ContentSendUser
     }
 
     /**
-     * Get hits
+     * Get hits.
      *
-     * @return integer 
+     * @return int
      */
     public function getHits()
     {

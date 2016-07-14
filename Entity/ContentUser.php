@@ -5,39 +5,39 @@ namespace Maith\NewsletterBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ContentUser
+ * ContentUser.
  *
  * @ORM\Table(name="maith_newsletter_content_user")
  * @ORM\Entity
  */
 class ContentUser
 {
-	/**
+    /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Content", inversedBy="contentUser")
      * @ORM\JoinColumn(name="maith_newsletter_content_id", referencedColumnName="id")
      */
-	private $content;
+    private $content;
 
-	/**
+    /**
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="User", inversedBy="contentUser")
      * @ORM\JoinColumn(name="maith_newsletter_user_id", referencedColumnName="id")
-     */	
-	private $user;
-    
+     */
+    private $user;
+
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
-    
 
     /**
-     * Set active
+     * Set active.
      *
-     * @param boolean $active
+     * @param bool $active
+     *
      * @return ContentUser
      */
     public function setActive($active)
@@ -48,9 +48,9 @@ class ContentUser
     }
 
     /**
-     * Get active
+     * Get active.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getActive()
     {
@@ -58,9 +58,10 @@ class ContentUser
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param \Maith\NewsletterBundle\Entity\Content $content
+     *
      * @return ContentUser
      */
     public function setContent(\Maith\NewsletterBundle\Entity\Content $content)
@@ -71,9 +72,9 @@ class ContentUser
     }
 
     /**
-     * Get content
+     * Get content.
      *
-     * @return \Maith\NewsletterBundle\Entity\Content 
+     * @return \Maith\NewsletterBundle\Entity\Content
      */
     public function getContent()
     {
@@ -81,9 +82,10 @@ class ContentUser
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \Maith\NewsletterBundle\Entity\User $user
+     *
      * @return ContentUser
      */
     public function setUser(\Maith\NewsletterBundle\Entity\User $user)
@@ -94,9 +96,9 @@ class ContentUser
     }
 
     /**
-     * Get user
+     * Get user.
      *
-     * @return \Maith\NewsletterBundle\Entity\User 
+     * @return \Maith\NewsletterBundle\Entity\User
      */
     public function getUser()
     {

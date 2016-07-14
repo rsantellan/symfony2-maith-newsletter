@@ -8,9 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EmailLayoutType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -19,14 +19,14 @@ class EmailLayoutType extends AbstractType
             ->add('body', 'textarea')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Maith\NewsletterBundle\Entity\EmailLayout'
+            'data_class' => 'Maith\NewsletterBundle\Entity\EmailLayout',
         ));
     }
 

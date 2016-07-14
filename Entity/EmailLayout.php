@@ -4,18 +4,17 @@ namespace Maith\NewsletterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Gedmo\Mapping\Annotation as Gedmo;
 /**
- * Description of EmailLayout
+ * Description of EmailLayout.
  *
  * @author Rodrigo Santellan
  * @ORM\Table(name="maith_newsletter_email_layout")
  * @ORM\Entity
  */
-class EmailLayout {
-    
+class EmailLayout
+{
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -36,13 +35,13 @@ class EmailLayout {
      * @ORM\Column(name="body", type="blob")
      */
     private $body;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="ContentSend", mappedBy="emailLayout")
      */
     private $contentSend;
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -50,9 +49,9 @@ class EmailLayout {
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -60,7 +59,7 @@ class EmailLayout {
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -74,7 +73,7 @@ class EmailLayout {
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -84,7 +83,7 @@ class EmailLayout {
     }
 
     /**
-     * Set body
+     * Set body.
      *
      * @param string $body
      *
@@ -98,7 +97,7 @@ class EmailLayout {
     }
 
     /**
-     * Get body
+     * Get body.
      *
      * @return string
      */
@@ -108,7 +107,7 @@ class EmailLayout {
     }
 
     /**
-     * Add contentSend
+     * Add contentSend.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentSend $contentSend
      *
@@ -122,7 +121,7 @@ class EmailLayout {
     }
 
     /**
-     * Remove contentSend
+     * Remove contentSend.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentSend $contentSend
      */
@@ -132,7 +131,7 @@ class EmailLayout {
     }
 
     /**
-     * Get contentSend
+     * Get contentSend.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -140,9 +139,9 @@ class EmailLayout {
     {
         return $this->contentSend;
     }
-    
-    public function __toString() {
+
+    public function __toString()
+    {
         return $this->getName();
     }
-
 }

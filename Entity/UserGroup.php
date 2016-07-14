@@ -3,10 +3,9 @@
 namespace Maith\NewsletterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * UserGroup
+ * UserGroup.
  *
  * @ORM\Table(name="maith_newsletter_group")
  * @ORM\Entity
@@ -14,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class UserGroup
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -29,16 +28,15 @@ class UserGroup
      */
     private $name;
 
-
     /**
      * @ORM\ManyToMany(targetEntity="User", mappedBy="user_groups")
      */
-    private $users;    
-   
+    private $users;
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -46,9 +44,10 @@ class UserGroup
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return UserGroup
      */
     public function setName($name)
@@ -59,16 +58,16 @@ class UserGroup
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -76,9 +75,10 @@ class UserGroup
     }
 
     /**
-     * Add users
+     * Add users.
      *
      * @param \Maith\NewsletterBundle\Entity\User $users
+     *
      * @return UserGroup
      */
     public function addUser(\Maith\NewsletterBundle\Entity\User $users)
@@ -89,7 +89,7 @@ class UserGroup
     }
 
     /**
-     * Remove users
+     * Remove users.
      *
      * @param \Maith\NewsletterBundle\Entity\User $users
      */
@@ -99,9 +99,9 @@ class UserGroup
     }
 
     /**
-     * Get users
+     * Get users.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsers()
     {

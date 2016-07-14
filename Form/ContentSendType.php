@@ -8,9 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ContentSendType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,7 +18,7 @@ class ContentSendType extends AbstractType
             //->add('title')
             //->add('body')
             ->add('sendat', null, array(
-                  'widget'=> 'single_text',
+                  'widget' => 'single_text',
                   'format' => 'dd-MM-yyyy',
                   )
             )
@@ -31,27 +31,27 @@ class ContentSendType extends AbstractType
             ->add('sendToType', 'choice', array(
                       'mapped' => false,
                       'choices' => array(
-                            1=> "Todos",
-                            2=> "Grupos",
-                            3=> "Usuarios",
-                          )
+                            1 => 'Todos',
+                            2 => 'Grupos',
+                            3 => 'Usuarios',
+                          ),
             ))
             ->add('sendlist', 'hidden', array(
-                      'mapped' => false
+                      'mapped' => false,
             ))
             ->add('sendlistIds', 'hidden', array(
-                      'mapped' => false
+                      'mapped' => false,
             ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Maith\NewsletterBundle\Entity\ContentSend'
+            'data_class' => 'Maith\NewsletterBundle\Entity\ContentSend',
         ));
     }
 

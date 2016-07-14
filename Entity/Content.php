@@ -3,11 +3,10 @@
 namespace Maith\NewsletterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Content
+ * Content.
  *
  * @ORM\Table(name="maith_newsletter_content")
  * @ORM\Entity
@@ -15,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Content
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -54,29 +53,27 @@ class Content
     private $updatedat;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active = 1;
 
-
     /**
      * @ORM\OneToMany(targetEntity="ContentUser", mappedBy="content")
      */
     private $contentUser;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="ContentSend", mappedBy="content")
      * @ORM\OrderBy({"createdat" = "ASC"})
      */
     private $contentSend;
-    
-    
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -84,9 +81,10 @@ class Content
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
+     *
      * @return Content
      */
     public function setTitle($title)
@@ -97,9 +95,9 @@ class Content
     }
 
     /**
-     * Get title
+     * Get title.
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -107,9 +105,10 @@ class Content
     }
 
     /**
-     * Set body
+     * Set body.
      *
      * @param string $body
+     *
      * @return Content
      */
     public function setBody($body)
@@ -120,9 +119,9 @@ class Content
     }
 
     /**
-     * Get body
+     * Get body.
      *
-     * @return string 
+     * @return string
      */
     public function getBody()
     {
@@ -130,9 +129,10 @@ class Content
     }
 
     /**
-     * Set createdat
+     * Set createdat.
      *
      * @param \DateTime $createdat
+     *
      * @return Content
      */
     public function setCreatedat($createdat)
@@ -143,9 +143,9 @@ class Content
     }
 
     /**
-     * Get createdat
+     * Get createdat.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedat()
     {
@@ -153,9 +153,10 @@ class Content
     }
 
     /**
-     * Set updatedat
+     * Set updatedat.
      *
      * @param \DateTime $updatedat
+     *
      * @return Content
      */
     public function setUpdatedat($updatedat)
@@ -166,9 +167,9 @@ class Content
     }
 
     /**
-     * Get updatedat
+     * Get updatedat.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedat()
     {
@@ -176,9 +177,10 @@ class Content
     }
 
     /**
-     * Set active
+     * Set active.
      *
-     * @param boolean $active
+     * @param bool $active
+     *
      * @return Content
      */
     public function setActive($active)
@@ -189,16 +191,16 @@ class Content
     }
 
     /**
-     * Get active
+     * Get active.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getActive()
     {
         return $this->active;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -206,9 +208,10 @@ class Content
     }
 
     /**
-     * Add contentUser
+     * Add contentUser.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentUser $contentUser
+     *
      * @return Content
      */
     public function addContentUser(\Maith\NewsletterBundle\Entity\ContentUser $contentUser)
@@ -219,7 +222,7 @@ class Content
     }
 
     /**
-     * Remove contentUser
+     * Remove contentUser.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentUser $contentUser
      */
@@ -229,9 +232,9 @@ class Content
     }
 
     /**
-     * Get contentUser
+     * Get contentUser.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getContentUser()
     {
@@ -239,9 +242,10 @@ class Content
     }
 
     /**
-     * Add contentSend
+     * Add contentSend.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentSend $contentSend
+     *
      * @return Content
      */
     public function addContentSend(\Maith\NewsletterBundle\Entity\ContentSend $contentSend)
@@ -252,7 +256,7 @@ class Content
     }
 
     /**
-     * Remove contentSend
+     * Remove contentSend.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentSend $contentSend
      */
@@ -262,9 +266,9 @@ class Content
     }
 
     /**
-     * Get contentSend
+     * Get contentSend.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getContentSend()
     {

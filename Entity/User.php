@@ -3,12 +3,10 @@
 namespace Maith\NewsletterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * User
+ * User.
  *
  * @ORM\Table(name="maith_newsletter_user")
  * @ORM\Entity
@@ -16,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -32,12 +30,11 @@ class User
     private $email;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active = true;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="UserGroup", indexBy="name", inversedBy="users")
@@ -56,9 +53,9 @@ class User
     private $userSendContent;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,9 +63,10 @@ class User
     }
 
     /**
-     * Set email
+     * Set email.
      *
      * @param string $email
+     *
      * @return User
      */
     public function setEmail($email)
@@ -79,7 +77,7 @@ class User
     }
 
     /**
-     * Get email
+     * Get email.
      *
      * @return string
      */
@@ -89,9 +87,10 @@ class User
     }
 
     /**
-     * Set active
+     * Set active.
      *
-     * @param boolean $active
+     * @param bool $active
+     *
      * @return User
      */
     public function setActive($active)
@@ -102,16 +101,16 @@ class User
     }
 
     /**
-     * Get active
+     * Get active.
      *
-     * @return boolean
+     * @return bool
      */
     public function getActive()
     {
         return $this->active;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -119,9 +118,10 @@ class User
     }
 
     /**
-     * Add user_groups
+     * Add user_groups.
      *
      * @param \Maith\NewsletterBundle\Entity\UserGroup $userGroups
+     *
      * @return User
      */
     public function addUserGroup(\Maith\NewsletterBundle\Entity\UserGroup $userGroups)
@@ -132,7 +132,7 @@ class User
     }
 
     /**
-     * Remove user_groups
+     * Remove user_groups.
      *
      * @param \Maith\NewsletterBundle\Entity\UserGroup $userGroups
      */
@@ -142,7 +142,7 @@ class User
     }
 
     /**
-     * Get user_groups
+     * Get user_groups.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -152,9 +152,10 @@ class User
     }
 
     /**
-     * Add contentUser
+     * Add contentUser.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentUser $contentUser
+     *
      * @return User
      */
     public function addContentUser(\Maith\NewsletterBundle\Entity\ContentUser $contentUser)
@@ -165,7 +166,7 @@ class User
     }
 
     /**
-     * Remove contentUser
+     * Remove contentUser.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentUser $contentUser
      */
@@ -175,7 +176,7 @@ class User
     }
 
     /**
-     * Get contentUser
+     * Get contentUser.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -185,9 +186,10 @@ class User
     }
 
     /**
-     * Add userSendContent
+     * Add userSendContent.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentSendUser $userSendContent
+     *
      * @return User
      */
     public function addUserSendContent(\Maith\NewsletterBundle\Entity\ContentSendUser $userSendContent)
@@ -198,7 +200,7 @@ class User
     }
 
     /**
-     * Remove userSendContent
+     * Remove userSendContent.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentSendUser $userSendContent
      */
@@ -208,7 +210,7 @@ class User
     }
 
     /**
-     * Get userSendContent
+     * Get userSendContent.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

@@ -3,11 +3,10 @@
 namespace Maith\NewsletterBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * ContentSend
+ * ContentSend.
  *
  * @ORM\Table(name="maith_newsletter_content_send")
  * @ORM\Entity
@@ -15,7 +14,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class ContentSend
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -43,7 +42,7 @@ class ContentSend
      * @ORM\Column(name="sendat", type="datetime")
      */
     private $sendat;
-    
+
     /**
      * @var \DateTime
      *
@@ -53,48 +52,47 @@ class ContentSend
     private $createdat;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active = true;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="quantitySended", type="integer")
      */
     private $quantitySended = 0;
 
-
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="sended", type="boolean")
      */
     private $sended = false;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Content", inversedBy="contentSend")
      * @ORM\JoinColumn(name="maith_newsletter_content_id", referencedColumnName="id")
      */
     private $content;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="ContentSendUser", mappedBy="content")
      */
-    private $contentUser;    
-    
+    private $contentUser;
+
     /**
      * @ORM\ManyToOne(targetEntity="EmailLayout", inversedBy="contentSend")
      * @ORM\JoinColumn(name="maith_newsletter_email_layout_id", referencedColumnName="id")
      */
-    private $emailLayout;    
-    
+    private $emailLayout;
+
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -102,9 +100,10 @@ class ContentSend
     }
 
     /**
-     * Set title
+     * Set title.
      *
      * @param string $title
+     *
      * @return ContentSend
      */
     public function setTitle($title)
@@ -115,9 +114,9 @@ class ContentSend
     }
 
     /**
-     * Get title
+     * Get title.
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -125,9 +124,10 @@ class ContentSend
     }
 
     /**
-     * Set body
+     * Set body.
      *
      * @param string $body
+     *
      * @return ContentSend
      */
     public function setBody($body)
@@ -138,9 +138,9 @@ class ContentSend
     }
 
     /**
-     * Get body
+     * Get body.
      *
-     * @return string 
+     * @return string
      */
     public function getBody()
     {
@@ -148,9 +148,10 @@ class ContentSend
     }
 
     /**
-     * Set createdat
+     * Set createdat.
      *
      * @param \DateTime $createdat
+     *
      * @return ContentSend
      */
     public function setCreatedat($createdat)
@@ -161,9 +162,9 @@ class ContentSend
     }
 
     /**
-     * Get createdat
+     * Get createdat.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedat()
     {
@@ -171,9 +172,10 @@ class ContentSend
     }
 
     /**
-     * Set active
+     * Set active.
      *
-     * @param boolean $active
+     * @param bool $active
+     *
      * @return ContentSend
      */
     public function setActive($active)
@@ -184,9 +186,9 @@ class ContentSend
     }
 
     /**
-     * Get active
+     * Get active.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getActive()
     {
@@ -194,9 +196,10 @@ class ContentSend
     }
 
     /**
-     * Set quantitySended
+     * Set quantitySended.
      *
-     * @param integer $quantitySended
+     * @param int $quantitySended
+     *
      * @return ContentSend
      */
     public function setQuantitySended($quantitySended)
@@ -207,16 +210,16 @@ class ContentSend
     }
 
     /**
-     * Get quantitySended
+     * Get quantitySended.
      *
-     * @return integer 
+     * @return int
      */
     public function getQuantitySended()
     {
         return $this->quantitySended;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -225,9 +228,10 @@ class ContentSend
     }
 
     /**
-     * Set content
+     * Set content.
      *
      * @param \Maith\NewsletterBundle\Entity\Content $content
+     *
      * @return ContentSend
      */
     public function setContent(\Maith\NewsletterBundle\Entity\Content $content = null)
@@ -238,9 +242,9 @@ class ContentSend
     }
 
     /**
-     * Get content
+     * Get content.
      *
-     * @return \Maith\NewsletterBundle\Entity\Content 
+     * @return \Maith\NewsletterBundle\Entity\Content
      */
     public function getContent()
     {
@@ -248,9 +252,10 @@ class ContentSend
     }
 
     /**
-     * Add contentUser
+     * Add contentUser.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentSendUser $contentUser
+     *
      * @return ContentSend
      */
     public function addContentUser(\Maith\NewsletterBundle\Entity\ContentSendUser $contentUser)
@@ -261,7 +266,7 @@ class ContentSend
     }
 
     /**
-     * Remove contentUser
+     * Remove contentUser.
      *
      * @param \Maith\NewsletterBundle\Entity\ContentSendUser $contentUser
      */
@@ -271,9 +276,9 @@ class ContentSend
     }
 
     /**
-     * Get contentUser
+     * Get contentUser.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getContentUser()
     {
@@ -281,9 +286,10 @@ class ContentSend
     }
 
     /**
-     * Set sended
+     * Set sended.
      *
-     * @param boolean $sended
+     * @param bool $sended
+     *
      * @return ContentSend
      */
     public function setSended($sended)
@@ -294,9 +300,9 @@ class ContentSend
     }
 
     /**
-     * Get sended
+     * Get sended.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getSended()
     {
@@ -304,9 +310,10 @@ class ContentSend
     }
 
     /**
-     * Set sendat
+     * Set sendat.
      *
      * @param \DateTime $sendat
+     *
      * @return ContentSend
      */
     public function setSendat($sendat)
@@ -317,9 +324,9 @@ class ContentSend
     }
 
     /**
-     * Get sendat
+     * Get sendat.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSendat()
     {
@@ -327,7 +334,7 @@ class ContentSend
     }
 
     /**
-     * Set emailLayout
+     * Set emailLayout.
      *
      * @param \Maith\NewsletterBundle\Entity\EmailLayout $emailLayout
      *
@@ -341,7 +348,7 @@ class ContentSend
     }
 
     /**
-     * Get emailLayout
+     * Get emailLayout.
      *
      * @return \Maith\NewsletterBundle\Entity\EmailLayout
      */
