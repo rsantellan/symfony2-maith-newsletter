@@ -16,7 +16,7 @@
       </div>
 
       <div class="mg-t-md">
-          <button class="btn btn-sm btn-danger pull-right" type="submit">Enviar</button>
+          <button class="btn btn-sm btn-success pull-right" type="submit">Guardar</button>
       </div>
   </form>
 </div>
@@ -38,10 +38,13 @@
 <div style="clear:both !important;"></div>
 <div class="pd-t-lg">
   <h4 class="pd-t-lg">{% trans %}admin_newsletter_content_not_sended_list{% endtrans %}</h4>
-  <div id='sended_table_container'>
+  <div id='not_sended_table_container'>
     {% include 'MaithNewsletterBundle:Default:notSendedTable.html.twig' with { 'entity' : entity } %}
   </div>
-  <h4 class="pd-t-lg">{% trans %}admin_newsletter_content_sended_list{% endtrans %}</h4><a href="javascript:void(0)" onclick="$('#sended_table_container').toggle()"><i class="fa fa-eye"></i></a>
+  <h4 class="pd-t-lg">{% trans %}admin_newsletter_content_sended_list{% endtrans %}</h4>
+  <a href="javascript:void(0)" onclick="$('#sended_table_container').toggle()" class="btn btn-info">
+    <i class="fa fa-eye"></i> Mostrar/Ocultar
+  </a>
   <div id='sended_table_container' style="display:none">
     {% include 'MaithNewsletterBundle:Default:sendedTable.html.twig' with { 'entity' : entity } %}
   </div>
@@ -78,7 +81,7 @@
       {{ form_rest(formSend) }}
       </div>
       <div class="mg-t-md">
-          <button class="btn btn-sm btn-danger pull-right" type="submit">Enviar</button>
+          <button class="btn btn-sm btn-success pull-right" type="submit">Guardar</button>
       </div>
   </form>
 </div>

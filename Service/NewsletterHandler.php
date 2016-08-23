@@ -239,7 +239,7 @@ class NewsletterHandler
 
     public function sendContentToGroups($contentSendId, $groupsList)
     {
-        $sql = 'INSERT INTO maith_newsletter_content_send_user (maith_newsletter_content_send_id, maith_newsletter_user_id , active) select :contentId, id, 1 from maith_newsletter_user where active = 1 and id in (select user_id from maith_newsletter_users_groups where usergroup_id = :groupId )';
+        $sql = 'INSERT INTO maith_newsletter_content_send_user (maith_newsletter_content_send_id, maith_newsletter_user_id , active) select :contentId, id, 1 from maith_newsletter_user where active = 1 and id in (select user_id from maith_newsletter_users_groups where user_group_id = :groupId )';
         $stmt = $this->em->getConnection()->prepare($sql);
         foreach ($groupsList as $groupId) {
             if ($groupId !== '') {

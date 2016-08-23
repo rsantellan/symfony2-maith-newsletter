@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="{{ asset('bundles/maithnewsletter/admin/vendor/toastr/toastr.css') }}">
 <link rel="stylesheet" href="{{ asset('bundles/maithnewsletter/admin/vendor/tagsinputs/jquery.tagsinput.css') }}">
 <link rel="stylesheet" href="{{ asset('bundles/maithnewsletter/admin/vendor/bootstrap-datepicker/datepicker.css') }}" >
+<link rel="stylesheet" href="{{ asset('bundles/maithnewsletter/admin/css/buttons.css') }}" >
 {% endblock %}
 {% block javascripts %}
 <script src="{{ asset('bundles/maithnewsletter/admin/vendor/toastr/toastr.min.js') }}"></script>
@@ -107,7 +108,10 @@
                             {% include 'MaithNewsletterBundle:Default:groupForm.html.twig' with { 'groupform' : groupform } %}
                          {% endif %}
                     </div>
-                    <strong>{% trans %}admin_newsletter_group_listado{% endtrans %}  </strong><a href="javascript:void(0)" onclick="$('#folders-list').toggle()"><i class="fa fa-eye"></i></a>
+                    <strong>{% trans %}admin_newsletter_group_listado{% endtrans %}</strong>
+                    <a href="javascript:void(0)" onclick="$('#folders-list').toggle()" class="btn btn-info">
+                        <i class="fa fa-eye"></i> Mostrar/Ocultar
+                    </a>
                     <table class="table table-bordered table-striped mg-t datatable" id="folders-list" style="display:none">
                         <thead>
                             <tr>

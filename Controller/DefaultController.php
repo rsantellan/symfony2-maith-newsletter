@@ -639,7 +639,7 @@ class DefaultController extends Controller
               $perRow = 3;
               break;
           default:
-              $rowClass = 'col-lg-3';
+              $rowClass = 'col-lg-6';
               $perRow = 4;
               break;
       }

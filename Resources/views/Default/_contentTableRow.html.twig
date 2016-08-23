@@ -4,8 +4,8 @@
     <td>{{ content.sended }}</td>
     <td>
         {% if is_expr_granted("hasRole('ROLE_NEWSLETTER_EDIT_CONTENT')") %}
-        <a href="{{ path('admin_newsletter_edit_content', { 'id': content.id })}}" onclick="return createEditNewsletter(this);">
-            <i class="fa fa-eye"></i>
+        <a href="{{ path('admin_newsletter_edit_content', { 'id': content.id })}}" onclick="return createEditNewsletter(this);" class="btn btn-success">
+            <i class="fa fa-archive" aria-hidden="true"></i><span class="left-padding-span">Ver</span>
         </a>
         {% endif %} 
     </td>

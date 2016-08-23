@@ -25,6 +25,7 @@ class User
     /**
      * @var string
      * @Assert\Email()
+     * @Assert\NotBlank()
      * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
