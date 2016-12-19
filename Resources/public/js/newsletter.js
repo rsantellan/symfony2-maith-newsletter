@@ -373,6 +373,8 @@ function saveData(form)
             toastr.error(data.message);
         }
         $('#newsletter-compose-container').html(data.html);
+        $('#newsletter-global-container').fadeIn('slow');
+        $('#newsletter-compose-container').html('');
       }, 
       complete: function()
       {
@@ -566,14 +568,13 @@ function startComposerTinyMCE()
   }
   
   tinyMCE.init({
-
 	  // General options
 	  mode : "textareas",
-      editor_selector: 'mceEditor',
+    editor_selector: 'mceEditor',
 	  theme: "modern",
-      relative_urls : false,
-      remove_script_host : false,
-      convert_urls : true,
+    relative_urls : false,
+    remove_script_host : false,
+    convert_urls : true,
 	  plugins: [
 		  "advlist autolink lists link image charmap print preview hr anchor pagebreak",
 		  "searchreplace wordcount visualblocks visualchars code fullscreen",
@@ -582,13 +583,13 @@ function startComposerTinyMCE()
 	  ],
 	  toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
 	  toolbar2: "print preview media | forecolor backcolor emoticons responsivefilemanager",
-      image_advtab: true,
+    image_advtab: true,
 	  forced_root_block : "",
 	  force_br_newlines : true,
 	  force_p_newlines : false,
-      external_filemanager_path:"/bundles/maithcommonadmin/filemanager/",
-      filemanager_title:"Responsive Filemanager" ,
-      external_plugins: { "filemanager" : "/bundles/maithcommonadmin/filemanager/plugin.min.js"}
+    external_filemanager_path:"/bundles/maithcommonadmin/filemanager/",
+    filemanager_title:"Responsive Filemanager" ,
+    external_plugins: { "filemanager" : "/bundles/maithcommonadmin/filemanager/plugin.min.js"}
 
   });  
 }

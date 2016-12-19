@@ -34,7 +34,18 @@ class NewsletterHandler
 
     public function retrieveAllNewsletterGroups()
     {
-        return $this->em->getRepository('MaithNewsletterBundle:UserGroup')->findAll();
+        $quantityData = [];
+        $quantitySql = 'select user_group_id, count(user_id) as quantity from maith_newsletter_users_groups where user_id in (select id from maith_newsletter_user where active =1) group by user_group_id';
+        $stmt = $this->em->getConnection()->executeQuery($quantitySql);
+        while($row = $stmt->fetch()){
+            $quantityData[$row['user_group_id']] = $row['quantity'];
+        } 
+        $returnData = [
+            'groups' => $this->em->getRepository('MaithNewsletterBundle:UserGroup')->findAll(),
+            'quantities' => $quantityData,
+        ];
+        return $returnData;
+        //return $this->em->getRepository('MaithNewsletterBundle:UserGroup')->findAll();
     }
 
     public function retrieveAllEmailsLayouts($objects = false)
@@ -50,7 +61,7 @@ class NewsletterHandler
 
     public function retrieveCreatedContents($offset = 0, $limit = 10)
     {
-        $query = $this->em->createQuery('select c from MaithNewsletterBundle:Content c where c.active = true order by c.createdat desc')
+        $query = $this->em->createQuery('select c, s from MaithNewsletterBundle:Content c left join c.contentSend s where c.active = true order by c.createdat desc, c.id desc')
                           ->setFirstResult($offset)
                           ->setMaxResults($limit);
 

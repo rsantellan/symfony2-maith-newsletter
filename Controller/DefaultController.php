@@ -44,7 +44,7 @@ class DefaultController extends Controller
             'userform' => $createUserForm->createView(),
             'uploadusers' => $uploadUsersForm->createView(),
             'groupform' => $createGroupForm->createView(),
-            'groups' => $groups,
+            'groups' => $groups['groups'],
             'quantity' => $quantity,
             'contents' => $newsletterService->retrieveCreatedContents(0, $this->limitContent),
             'limitContent' => $this->limitContent,
@@ -60,8 +60,8 @@ class DefaultController extends Controller
             'result' => true,
             'html' => '',
         );
-        $offset = ($page * $this->limitContent);// + $this->limitContent;
-        //'contents' : contents, 'pager': 0, 'limitContent' : limitContent
+        $offset = ($page * $this->limitContent);
+        $newsletterService = $this->get('maith_newsletter');
         $responseData['html'] = $this->renderView('MaithNewsletterBundle:Default:_contentTable.html.twig', array(
           'contents' => $newsletterService->retrieveCreatedContents($offset, $this->limitContent),
           'pager' => $page,
@@ -685,7 +685,9 @@ class DefaultController extends Controller
     public function searchListUsersAction(Request $request)
     {
         $newsletterService = $this->get('maith_newsletter');
-        $list = $newsletterService->retrieveUserSearchWithLimit($request->get('search'));
+        $search = $request->get('search');
+        $list = $newsletterService->retrieveUserSearchWithLimit($search);
+        $limit = 20;
         $html = $this->renderView('MaithNewsletterBundle:Default:showUsersList.html.twig', array(
                     'list' => $list,
                     'search' => $search,

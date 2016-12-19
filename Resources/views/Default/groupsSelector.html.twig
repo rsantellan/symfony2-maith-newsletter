@@ -1,13 +1,13 @@
 <div>
-  {% if groups | length == 0 %}
+  {% if groups['groups'] | length == 0 %}
     <h3>No hay grupos. No seleccione esta opción</h3>
   {% else %}
   <form action="javascript:void(0)" method='POST' onsubmit='return false;'>
     <div class="form-group">
         <label for="groups-selector">Elegir el grupo:</label>  
         <select multiple="true" class="form-control" id="groups-selector" name="groups-selector">
-          {% for group in groups %}
-            <option value="{{ group.id }}">{{ group.name }}</option>
+          {% for group in groups['groups'] %}
+            <option value="{{ group.id }}">{{ group.name }} [Cantidad: {% if groups['quantities'][group.id] is defined %}{{groups['quantities'][group.id]}}{% else %}0{% endif %}]</option>
           {% endfor %}
         </select>
     </div>
