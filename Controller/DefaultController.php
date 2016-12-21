@@ -105,7 +105,7 @@ class DefaultController extends Controller
 
     private function createNewNewsletterContentForm(Content $entity)
     {
-        $form = $this->createForm(new ContentType(), $entity, array(
+        $form = $this->createForm('Maith\NewsletterBundle\Form\ContentType', $entity, array(
             'method' => 'POST',
         ));
 
@@ -114,7 +114,7 @@ class DefaultController extends Controller
 
     private function createNewEmailLayoutForm(EmailLayout $entity)
     {
-        $form = $this->createForm(new EmailLayoutType(), $entity, array(
+        $form = $this->createForm('Maith\NewsletterBundle\Form\EmailLayoutType', $entity, array(
             'method' => 'POST',
         ));
 
@@ -247,7 +247,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('Unable to find Content entity.');
         }
 
-        $form = $this->createForm(new ContentEditType(), $entity, array(
+        $form = $this->createForm('Maith\NewsletterBundle\Form\ContentEditType', $entity, array(
             'method' => 'POST',
         ));
 
@@ -260,7 +260,7 @@ class DefaultController extends Controller
 
     private function createEditContent($entity, $form)
     {
-        $formSend = $this->createForm(new ContentSendType(), new ContentSend(), array(
+        $formSend = $this->createForm('Maith\NewsletterBundle\Form\ContentSendType', new ContentSend(), array(
           'method' => 'POST',
       ));
 

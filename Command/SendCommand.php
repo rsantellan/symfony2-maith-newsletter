@@ -22,6 +22,10 @@ class SendCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $obj = $this->getContainer()->get('maith_newsletter_sender');
+        $obj->sendEmails();
+        return;
         $testingMailersList = array(
             'swiftmailer.mailer.first_mailer',
             'swiftmailer.mailer.second_mailer',

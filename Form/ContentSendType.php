@@ -28,18 +28,22 @@ class ContentSendType extends AbstractType
             //->add('sended')
             //->add('content')
             ->add('emailLayout')
-            ->add('sendToType', 'choice', array(
+            ->add('sendToType', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
                       'mapped' => false,
+                      'choices_as_values' => true,
                       'choices' => array(
-                            1 => 'Todos',
-                            2 => 'Grupos',
-                            3 => 'Usuarios',
+                            'Todos' => 1,
+                            'Grupos' => 2,
+                            'Usuarios' => 3,
                           ),
+                      'choice_value' => function ($choice) {
+                           return $choice;
+                      },
             ))
-            ->add('sendlist', 'hidden', array(
+            ->add('sendlist', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', array(
                       'mapped' => false,
             ))
-            ->add('sendlistIds', 'hidden', array(
+            ->add('sendlistIds', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', array(
                       'mapped' => false,
             ))
         ;

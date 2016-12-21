@@ -1,12 +1,14 @@
 parameters:
     maith_newsletter_body_handler.class: Maith\NewsletterBundle\Service\DoNothingBodyService
-    maith_newsletter_handler.class: Maith\NewsletterBundle\Service\NewsletterHandler
+    maith_newsletter_handler.class: Maith\NewsletterBundle\Service\NewsletterService
+    maith_newsletter_sending_service.class: Maith\NewsletterBundle\Service\NewsletterSendingService
+    maith_newsletter_sending_service.strategy: 1
+    maith_newsletter_sending_service.maximunpercron: 15
 
 services:
-
     maith_new_letter.user_logged:
         class: Maith\NewsletterBundle\Listener\NewsLetterListener
-        arguments: [@doctrine.orm.entity_manager, @logger]
+        arguments: ["@doctrine.orm.entity_manager", "@logger"]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 400 }
 
@@ -18,4 +20,9 @@ services:
     maith_newsletter:
         class: %maith_newsletter_handler.class%
         arguments: ["@doctrine.orm.entity_manager", "@logger"]
+        lazy: true
+
+    maith_newsletter_sender:
+        class: %maith_newsletter_sending_service.class%
+        arguments: ["@doctrine.orm.entity_manager", "@logger", "@maith_common.email", "@maith_newsletter_body_handler", %maith_newsletter_sending_service.strategy%", "%maith_newsletter_sending_service.maximunpercron%", '%track_links%']
         lazy: true

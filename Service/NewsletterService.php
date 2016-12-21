@@ -10,7 +10,7 @@ use Maith\NewsletterBundle\Entity\Content;
 use Maith\NewsletterBundle\Entity\ContentSend;
 use Maith\NewsletterBundle\Entity\EmailLayout;
 
-class NewsletterHandler
+class NewsletterService
 {
     protected $em;
 

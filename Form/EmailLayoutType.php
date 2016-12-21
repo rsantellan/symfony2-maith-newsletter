@@ -16,7 +16,7 @@ class EmailLayoutType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('body', 'textarea')
+            ->add('body', 'Symfony\Component\Form\Extension\Core\Type\TextareaType')
         ;
     }
 
