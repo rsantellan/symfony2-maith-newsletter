@@ -5,6 +5,7 @@ namespace Maith\NewsletterBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class UserType extends AbstractType
 {
@@ -15,7 +16,7 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'email', array(
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', array(
                 'required' => true,
             ))
 //            ->add('active')
@@ -36,7 +37,7 @@ class UserType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'maith_newsletterbundle_user';
     }

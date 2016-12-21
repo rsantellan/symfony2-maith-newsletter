@@ -33,7 +33,7 @@ class EmailLayoutType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'maith_newsletterbundle_emaillayout';
     }

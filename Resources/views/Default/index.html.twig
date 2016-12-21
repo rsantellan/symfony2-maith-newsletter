@@ -81,7 +81,7 @@
                     {% trans %}admin_newsletter_user_upload_file_title{% endtrans %}
                 </div>
                 <div class="panel-body">
-                    <form action="{{ path('admin_newsletter_upload_user') }}" method="post" role="form" {{ form_enctype(uploadusers) }}>
+                    {{ form_start(uploadusers, {'attr' : {'role' : 'form'}}) }}
                       <div class="form-group">
                           {{ form_errors(uploadusers.submitFile) }}
                           <label for="{{ uploadusers.submitFile.vars.id }}">{% trans %}admin_newsletter_user_csv_file{% endtrans %}</label>
@@ -91,7 +91,7 @@
                         <button type="submit" class="btn btn-default">{% trans %}admin_newsletter_user_upload{% endtrans %}</button>
                       </div>	
                           {{ form_rest(uploadusers) }}
-                    </form>            
+                    {{ form_end(uploadusers) }}
                 </div>
             </section>
             {% endif %}        

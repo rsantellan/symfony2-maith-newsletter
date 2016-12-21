@@ -77,7 +77,9 @@ class DefaultController extends Controller
     private function uploadUsersForm()
     {
         $form = $this->createFormBuilder()
-            ->add('submitFile', 'file', array('label' => 'File to Submit'))
+            ->add('submitFile', 'Symfony\Component\Form\Extension\Core\Type\FileType', array('label' => 'File to Submit'))
+            ->setAction($this->generateUrl("admin_newsletter_upload_user"))
+            ->setMethod('POST')
             ->getForm();
 
         return $form;
@@ -85,7 +87,7 @@ class DefaultController extends Controller
 
     private function createNewNewsletterUserForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm('Maith\NewsletterBundle\Form\UserType', $entity, array(
             'method' => 'POST',
         ));
 
@@ -94,7 +96,7 @@ class DefaultController extends Controller
 
     private function createNewNewsletterGroupForm(UserGroup $entity)
     {
-        $form = $this->createForm(new UserGroupType(), $entity, array(
+        $form = $this->createForm('Maith\NewsletterBundle\Form\UserGroupType', $entity, array(
             'method' => 'POST',
         ));
 
