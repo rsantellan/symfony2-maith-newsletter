@@ -5,6 +5,7 @@ namespace Maith\NewsletterBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Monolog\Logger;
 use Maith\Common\AdminBundle\Services\MaithEmailService;
+use Maith\Common\AdminBundle\Services\MaithParametersService;
 
 class NewsletterSendingService
 {
@@ -29,7 +30,7 @@ class NewsletterSendingService
 
     protected $bodyHandler;
 
-    public function __construct(EntityManager $em, Logger $logger, MaithEmailService $mailer, BodyHandlerInterface $bodyHandler, $strategy = 0, $maximunpercron = 15, $track_links = false)
+    public function __construct(EntityManager $em, Logger $logger, MaithEmailService $mailer, MaithParametersService $parametersService, BodyHandlerInterface $bodyHandler, $strategy = 0, $maximunpercron = 15, $track_links = false)
     {
         $this->em = $em;
         $this->logger = $logger;
@@ -38,6 +39,7 @@ class NewsletterSendingService
         $this->maximunpercron = $maximunpercron;
         $this->track_links = $track_links;
         $this->bodyHandler = $bodyHandler;
+        $this->parametersService = $parametersService;
         $this->logger->addDebug('Starting Newsletter Send manager');
     }
 
@@ -48,11 +50,10 @@ class NewsletterSendingService
         $stmt = $this->em->getConnection()->prepare($sql);
         $today = new \DateTime();
         $stmt->execute(array('sendDate' => $today->format('Y-m-d')));
-        
-
         $totals = 0;
         $mailerCounter = 0;
         $indexMailer = 0;
+        $from = [$this->parametersService->getParameter('contact-email-from') => $this->parametersService->getParameter('contact-email-from-name')];
         foreach ($stmt->fetchAll() as $row) {
         	$sended = $this->em->getRepository('MaithNewsletterBundle:ContentSend')->find($row['id']);
             $users = $this->retrieveUsers($sended);
@@ -89,8 +90,6 @@ class NewsletterSendingService
             $this->em->persist($sended);
             $this->em->flush();
         }
-
-        
     }
 
     private function retrieveUsers(\Maith\NewsletterBundle\Entity\ContentSend $sended)
