@@ -11,8 +11,6 @@ class DoNothingBodyService implements BodyHandlerInterface
 {
     public function changeBody($body, $trackLinks = false, $email = '', $id = '')
     {
-        var_dump('aca');
-
         return $body;
     }
 }

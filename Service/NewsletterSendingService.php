@@ -8,6 +8,9 @@ use Maith\Common\AdminBundle\Services\MaithEmailService;
 
 class NewsletterSendingService
 {
+	const EMAIL_SPOOL = 1;
+	const EMAIL_DELIVERY = 0;
+
     protected $em;
 
     protected $logger;
@@ -45,23 +48,19 @@ class NewsletterSendingService
         $stmt = $this->em->getConnection()->prepare($sql);
         $today = new \DateTime();
         $stmt->execute(array('sendDate' => $today->format('Y-m-d')));
-        $dqlUsers = 'select c from MaithNewsletterBundle:ContentSendUser c join c.user u where c.active = true and c.content = :contentSend';
+        
 
         $totals = 0;
         $mailerCounter = 0;
+        $indexMailer = 0;
         foreach ($stmt->fetchAll() as $row) {
         	$sended = $this->em->getRepository('MaithNewsletterBundle:ContentSend')->find($row['id']);
-            $users = $this->em->createQuery($dqlUsers)
-			            ->setParameters(array(
-			                'contentSend' => $sended,
-			            	))
-			            ->setMaxResults($this->maximunpercron)
-			            ->getResult();
+            $users = $this->retrieveUsers($sended);
 			foreach ($users as $user) {
                 $htmlPage = $this->bodyHandler->changeBody($row['body'], $this->track_links, $user->getUser()->getEmail(), $row['id']);
                 $updateUser = false;
                 try{
-                	$quantity = $this->mailer->send(array('rsantellan@gmail.com' => 'Rodrigo Santellan'), $user->getUser()->getEmail(), $sended->getContent()->getTitle(), $htmlPage);	
+                	$quantity = $this->mailer->send(array('rsantellan@gmail.com' => 'Rodrigo Santellan'), $user->getUser()->getEmail(), $sended->getContent()->getTitle(), $htmlPage, $indexMailer);	
 	    			$this->logger->addInfo('Sending :'.$quantity);
 	    			$totals = $totals + $quantity;
 	    			if($quantity > 0){
@@ -76,6 +75,11 @@ class NewsletterSendingService
     				$user->setActive(false);
                 	$this->em->persist($user);
     			}
+    			$indexMailer++;
+    			if($indexMailer >= count($this->mailer->retriveMailersList())){
+    				$indexMailer = 0;
+
+    			}
             }
             if(count($users) == 0){
             	$sended->setActive(false);
@@ -87,6 +91,19 @@ class NewsletterSendingService
         }
 
         
+    }
+
+    private function retrieveUsers(\Maith\NewsletterBundle\Entity\ContentSend $sended)
+    {
+    	$dqlUsers = 'select c from MaithNewsletterBundle:ContentSendUser c join c.user u where c.active = true and c.content = :contentSend';
+        $usersQuery = $this->em->createQuery($dqlUsers)
+			            ->setParameters(array(
+			                'contentSend' => $sended,
+			            	));
+		if($this->strategy == self::EMAIL_DELIVERY){
+			$usersQuery->setMaxResults($this->maximunpercron);
+		}
+        return $usersQuery->getResult();
     }
 
     private function sendWithLimit()
